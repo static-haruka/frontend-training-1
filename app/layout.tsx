@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next"; // ページの <title> や <meta> を型付きで定義するため
+import { Geist, Geist_Mono } from "next/font/google"; // Google Fonts を Next公式の方法で読み込む
 import "./globals.css";
-import StyledComponentsRegistry from "./lib/styled-components-registry";
-
+import StyledComponentsRegistry from "./lib/styled-components-registry"; // styled-components をSSR対応で安全にするラッパー
+import styled from "styled-components";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,14 +26,89 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="ja">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StyledComponentsRegistry>
-          {children}
+          <AppLayout>
+            <Header>
+              <HeaderTitle>顧客管理システム</HeaderTitle>
+            </Header>
+
+            <Main>
+              <Sidebar>
+                <Nav>
+                  <NavItem href="/user_search">ユーザー検索</NavItem>
+                  <NavItem href="/">トップ</NavItem>
+                </Nav>
+              </Sidebar>
+
+              {/* 各 page.tsx の中身はここに差し込まれる */}
+              <Content>{children}</Content>
+            </Main>
+          </AppLayout>
         </StyledComponentsRegistry>
       </body>
     </html>
   );
 }
+
+/* ---------- styles（共通レイアウト分だけ） ---------- */
+
+const AppLayout = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.header`
+  height: 56px;
+  background: #101828;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+`;
+
+const HeaderTitle = styled.div`
+  font-weight: 700;
+  font-size: 14px;
+`;
+
+const Main = styled.div`
+  flex: 1;
+  display: flex;
+  min-height: 0;
+`;
+
+const Sidebar = styled.aside`
+  width: 220px;
+  background: #f2f4f7;
+  border-right: 1px solid #e4e7ec;
+  padding: 16px 12px;
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const NavItem = styled(Link)`
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #101828;
+  text-decoration: none;
+
+  &:hover {
+    background: #e4e7ec;
+  }
+`;
+
+const Content = styled.main`
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  background: #f5f6f8;
+  overflow: auto;
+`;
