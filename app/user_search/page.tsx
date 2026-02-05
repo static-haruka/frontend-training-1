@@ -33,18 +33,24 @@ export default function UserSearchPage() {
   return (
     <Page>
       <Card>
+      <SearchRow>
         <Title>顧客情報の検索</Title>
 
-        <SearchRow>
+        <SearchInputWrap>
+          <SearchIcon aria-hidden="true">
+            <img src="/icons/icons8-search.png" alt="" />
+          </SearchIcon>
           <SearchInput
             placeholder="キーワード・電話番号で検索"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <SearchButton type="button" onClick={handleSearch}>
-            検索
-          </SearchButton>
-        </SearchRow>
+        </SearchInputWrap>
+
+        <SearchButton type="button" onClick={handleSearch}>
+          検索
+        </SearchButton>
+      </SearchRow>
 
         <Table>
           <thead>
@@ -70,54 +76,82 @@ export default function UserSearchPage() {
 /* ---------- styles ---------- */
 
 const Page = styled.div`
-  min-height: 100vh;
-  padding: 48px 16px;
-  background: #f5f6f8;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  align-items: center;
 `;
 
 const Card = styled.section`
-  width: 100%;
-  max-width: 900px;
-  background: #fff;
-  border-radius: 8px;
-  padding: 32px;
-`;
-
-const Title = styled.h1`
-  margin: 0 0 16px;
-  font-size: 20px;
+  margin: 0 auto;
 `;
 
 const SearchRow = styled.div`
   display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 18px;
+`;
+
+const Title = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+`;
+
+const SearchInputWrap = styled.div`
+  position: relative;
+  flex: 0 0 360px;
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.55;
+  img {
+  width: 15px;
+  }
 `;
 
 const SearchInput = styled.input`
-  flex: 1;
-  height: 40px;
-  padding: 0 12px;
+  width: 100%;
+  height: 36px;
+  border-radius: 6px;
+  background: #F7F7F7;
+  padding: 0 12px 0 34px;
+  font-size: 12px;
+
+  &:focus {
+    border-color: #93c5fd;
+    background: #ffffff;
+  }
 `;
 
 const SearchButton = styled.button`
-  height: 40px;
-  padding: 0 16px;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 6px;
+  background: #0075AF;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+
+  &:hover {
+    opacity: 0.92;
+  }
 `;
 
 const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+  display: none; //表の表示について後日作業
+  // width: 100%;
+  // border-collapse: collapse;
 
-  th,
-  td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
+  // th,
+  // td {
+  //   border: 1px solid #ddd;
+  //   padding: 8px;
+  // }
 
-  th {
-    background: #f9fafb;
-  }
+  // th {
+  //   background: #f9fafb;
+  // }
 `;

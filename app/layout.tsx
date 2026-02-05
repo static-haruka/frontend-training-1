@@ -29,86 +29,148 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StyledComponentsRegistry>
-          <AppLayout>
-            <Header>
-              <HeaderTitle>顧客管理システム</HeaderTitle>
-            </Header>
-
-            <Main>
+          <App>
+            <Body>
               <Sidebar>
-                <Nav>
-                  <NavItem href="/user_search">ユーザー検索</NavItem>
-                  <NavItem href="/">トップ</NavItem>
-                </Nav>
+                <SidebarTop>
+                  <LogoMark aria-hidden="true">
+                    <img src="/icons/icons8-u-red.png" alt="" />
+                  </LogoMark>
+                </SidebarTop>
+
+                <SidebarChevron>
+                    <img src="/icons/icons8-chevron-right.png" alt="" />
+                </SidebarChevron>
+
+                <SidebarNav>
+                  <SidebarItem href="/user_search" data-active="true">
+                    <SidebarItemText>
+                      買取<br />査定
+                    </SidebarItemText>
+                  </SidebarItem>
+                  <SidebarItem href="/">
+                    <SidebarItemText>入庫</SidebarItemText>
+                  </SidebarItem>
+                  <SidebarItem href="/">
+                    <SidebarItemText>
+                      顧客<br />情報
+                    </SidebarItemText>
+                  </SidebarItem>
+                </SidebarNav>
               </Sidebar>
 
-              {/* 各 page.tsx の中身はここに差し込まれる */}
-              <Content>{children}</Content>
-            </Main>
-          </AppLayout>
+              <Main>
+                <Header>
+                  <HeaderLeft>
+                    <HeaderTitle>メンテナンスノート</HeaderTitle>
+                  </HeaderLeft>
+                  <HeaderRight>UPGARAGE練馬店</HeaderRight>
+                </Header>
+
+                <Content>{children}</Content>
+              </Main>
+            </Body>
+          </App>
+
         </StyledComponentsRegistry>
       </body>
     </html>
   );
 }
 
-/* ---------- styles（共通レイアウト分だけ） ---------- */
+/* ---------- styles ---------- */
 
-const AppLayout = styled.div`
+const App = styled.div`
   height: 100vh;
+  display: flex;
+`;
+
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+`;
+
+const Sidebar = styled.aside`
+  width: 72px;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SidebarTop = styled.div`
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFE000;
+`;
+
+const LogoMark = styled.div`
+  width: 30px;
+  background: #FFE000;
+`;
+
+const SidebarChevron = styled.div`
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e5e7eb;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const SidebarNav = styled.nav`
+`;
+
+const SidebarItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+`;
+
+const SidebarItemText = styled.span`
+  font-size: 12px;
+`;
+
+const Main = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
 `;
 
 const Header = styled.header`
   height: 56px;
-  background: #101828;
-  color: #fff;
+  background:  #F7F7F7;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+`;
+
+const HeaderLeft = styled.div`
 `;
 
 const HeaderTitle = styled.div`
-  font-weight: 700;
   font-size: 14px;
+  font-weight: 600;
 `;
 
-const Main = styled.div`
-  flex: 1;
-  display: flex;
-  min-height: 0;
-`;
-
-const Sidebar = styled.aside`
-  width: 220px;
-  background: #f2f4f7;
-  border-right: 1px solid #e4e7ec;
-  padding: 16px 12px;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const NavItem = styled(Link)`
-  display: block;
-  padding: 10px 12px;
-  border-radius: 8px;
-  color: #101828;
-  text-decoration: none;
-
-  &:hover {
-    background: #e4e7ec;
-  }
+const HeaderRight = styled.div`
+  margin-left: auto;
+  font-size: 12px;
+  color: #6b7280
 `;
 
 const Content = styled.main`
   flex: 1;
-  min-width: 0;
-  padding: 24px;
-  background: #f5f6f8;
-  overflow: auto;
 `;
