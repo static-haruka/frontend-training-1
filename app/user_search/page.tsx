@@ -1,34 +1,53 @@
 'use client'; /* Styled Components を使うために明示（ブラウザで動くコンポーネントを生成） */
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 type User = {
-  id: number;
+  crooooberId: string;
   name: string;
   phone: string;
+  address: string;
 };
 
+
 const USERS: User[] = [
-  { id: 1, name: '山田 太郎', phone: '090-1111-2222' },
-  { id: 2, name: '佐藤 花子', phone: '080-3333-4444' },
-  { id: 3, name: '鈴木 次郎', phone: '070-5555-6666' },
+  {
+    crooooberId: '12345678901234',
+    name: '山田 太郎',
+    phone: '09042241234',
+    address: '東京都練馬区富士台1-1-1 203号室',
+  },
+  {
+    crooooberId: '32323343022332',
+    name: '山田 太郎',
+    phone: '09042241234',
+    address: '東京都練馬区富士台1-1-1 203号室',
+  },
+  {
+    crooooberId: '98382329238838',
+    name: '小池 若奈',
+    phone: '09042241234',
+    address: '東京都練馬区富士台1-1-1 203号室',
+  },
 ];
+
 
 export default function UserSearchPage() {
   const [keyword, setKeyword] = useState('');
-  const [users, setUsers] = useState<User[]>(USERS);
 
-  const handleSearch = () => {
-    const filtered = USERS.filter((user) => {
-      return (
-        user.name.includes(keyword) ||
-        user.phone.includes(keyword)
-      );
-    });
+  const filteredUsers = useMemo(() => {
+    const q = keyword.trim();
+    if (q === '') return [];
+  return USERS.filter((user) =>
+    user.name.includes(q) ||
+    user.phone.includes(q) ||
+    user.crooooberId.includes(q)
+  );
 
-    setUsers(filtered);
-  };
+  }, [keyword]);
+
+  const handleSearch = () => setKeyword('');
 
   return (
     <Page>
@@ -52,22 +71,29 @@ export default function UserSearchPage() {
         </SearchButton>
       </SearchRow>
 
+      {keyword.trim() !== '' && filteredUsers.length > 0 && (
         <Table>
           <thead>
             <tr>
-              <th>名前</th>
+              <th>Croooober ID</th>
+              <th>氏名</th>
               <th>電話番号</th>
+              <th>住所</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
+            {filteredUsers.map((user) => (
+              <tr key={user.crooooberId}>
+                <td>{user.crooooberId}</td>
                 <td>{user.name}</td>
                 <td>{user.phone}</td>
+                <td>{user.address}</td>
               </tr>
             ))}
           </tbody>
         </Table>
+      )}
+
       </Card>
     </Page>
   );
@@ -141,17 +167,17 @@ const SearchButton = styled.button`
 `;
 
 const Table = styled.table`
-  display: none; //表の表示について後日作業
-  // width: 100%;
-  // border-collapse: collapse;
+  // display: none; //表の表示について後日作業
+  width: 100%;
+  border-collapse: collapse;
 
-  // th,
-  // td {
-  //   border: 1px solid #ddd;
-  //   padding: 8px;
-  // }
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
 
-  // th {
-  //   background: #f9fafb;
-  // }
+  th {
+    background: #f9fafb;
+  }
 `;

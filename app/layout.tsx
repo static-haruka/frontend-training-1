@@ -4,6 +4,8 @@ import "./globals.css";
 import StyledComponentsRegistry from "./lib/styled-components-registry"; // styled-components をSSR対応で安全にするラッパー
 import styled from "styled-components";
 import Link from "next/link";
+import Sidebar from "./components/Sidebar";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,34 +33,7 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           <App>
             <Body>
-              <Sidebar>
-                <SidebarTop>
-                  <LogoMark aria-hidden="true">
-                    <img src="/icons/icons8-u-red.png" alt="" />
-                  </LogoMark>
-                </SidebarTop>
-
-                <SidebarChevron>
-                    <img src="/icons/icons8-chevron-right.png" alt="" />
-                </SidebarChevron>
-
-                <SidebarNav>
-                  <SidebarItem href="/user_search" data-active="true">
-                    <SidebarItemText>
-                      買取<br />査定
-                    </SidebarItemText>
-                  </SidebarItem>
-                  <SidebarItem href="/">
-                    <SidebarItemText>入庫</SidebarItemText>
-                  </SidebarItem>
-                  <SidebarItem href="/">
-                    <SidebarItemText>
-                      顧客<br />情報
-                    </SidebarItemText>
-                  </SidebarItem>
-                </SidebarNav>
-              </Sidebar>
-
+              <Sidebar />
               <Main>
                 <Header>
                   <HeaderLeft>
@@ -66,7 +41,6 @@ export default function RootLayout({
                   </HeaderLeft>
                   <HeaderRight>UPGARAGE練馬店</HeaderRight>
                 </Header>
-
                 <Content>{children}</Content>
               </Main>
             </Body>
@@ -88,58 +62,6 @@ const App = styled.div`
 const Body = styled.div`
   flex: 1;
   display: flex;
-`;
-
-const Sidebar = styled.aside`
-  width: 72px;
-  border-right: 1px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SidebarTop = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #FFE000;
-`;
-
-const LogoMark = styled.div`
-  width: 30px;
-  background: #FFE000;
-`;
-
-const SidebarChevron = styled.div`
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #e5e7eb;
-  img {
-    width: 20px;
-    height: 20px;
-  }
-`;
-
-const SidebarNav = styled.nav`
-`;
-
-const SidebarItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 56px;
-
-  border-bottom: 1px solid #e5e7eb;
-
-  &:hover {
-    background: #f3f4f6;
-  }
-`;
-
-const SidebarItemText = styled.span`
-  font-size: 12px;
 `;
 
 const Main = styled.div`
@@ -168,7 +90,6 @@ const HeaderTitle = styled.div`
 const HeaderRight = styled.div`
   margin-left: auto;
   font-size: 12px;
-  color: #6b7280
 `;
 
 const Content = styled.main`
