@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 type MenuKey = 'purchase' | 'stock' | 'customer';
 
@@ -36,6 +37,8 @@ const MENU: Record<MenuKey, { label: string; subItems: SubItem[] }> = {
 };
 
 export default function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <SidebarWrap>
       <SidebarBase>
@@ -45,9 +48,10 @@ export default function Sidebar() {
           </LogoMark>
         </SidebarTop>
 
-        <SidebarChevron>
+        <SidebarChevron type="button" onClick={() => setIsOpen(true)} aria-label="">
           <img src="/icons/icons8-chevron-right.png" alt="" />
         </SidebarChevron>
+
 
         <SidebarNav>
           <SidebarItem>
@@ -102,6 +106,35 @@ export default function Sidebar() {
           </SidebarItem>
         </SidebarNav>
       </SidebarBase>
+
+      <Overlay $open={isOpen}>
+        <Panel $open={isOpen} role="dialog" aria-label="サイドバー一覧">
+          <PanelHeader>
+            <CloseButton type="button" onClick={() => setIsOpen(false)} aria-label="閉じる">
+              ×
+            </CloseButton>
+          </PanelHeader>
+
+          <PanelBody>
+            {(Object.keys(MENU) as MenuKey[]).map((key) => (
+              <PanelSection key={key}>
+                <SectionTitle>{MENU[key].label.replace('\n', '')}</SectionTitle>
+
+                <SubMenuList>
+                  {MENU[key].subItems.map((item, index) => (
+                    <SubMenuRow key={`${key}-${index}-${item.label}`}>
+                      <SubMenuIcon aria-hidden="true" />
+                      <SubMenuText>{item.label}</SubMenuText>
+                    </SubMenuRow>
+                  ))}
+                </SubMenuList>
+              </PanelSection>
+            ))}
+          </PanelBody>
+        </Panel>
+      </Overlay>
+
+
     </SidebarWrap>
   );
 }
@@ -129,7 +162,7 @@ const LogoMark = styled.div`
   width: 30px;
 `;
 
-const SidebarChevron = styled.div`
+const SidebarChevron = styled.button`
   height: 56px;
   display: flex;
   align-items: center;
@@ -139,6 +172,8 @@ const SidebarChevron = styled.div`
   img {
     width: 20px;
   }
+
+  width: 72px;
 `;
 
 const SidebarNav = styled.nav``;
@@ -179,7 +214,6 @@ const SubMenuPanel = styled.div`
 `;
 
 const SubMenuList = styled.div`
-  border: 1px solid #e5e7eb;
 `;
 
 const SubMenuRow = styled.div`
@@ -203,3 +237,53 @@ const SubMenuIcon = styled.div`
 const SubMenuText = styled.div`
   font-size: 14px;
 `;
+
+const Overlay = styled.div<{ $open: boolean }>`
+  position: fixed;
+`;
+
+const Panel = styled.div<{ $open: boolean }>`
+  position: absolute;
+  margin-top: 56px;
+  top: 0;
+  height: 100vh;
+  width: 320px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+
+  transform: ${(p) => (p.$open ? 'translateX(0)' : 'translateX(-100%)')};
+
+  display: flex;
+  flex-direction: column;
+`;
+
+const PanelHeader = styled.div`
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+`;
+
+const CloseButton = styled.button`
+  margin-left: auto;
+  width: 32px;
+  font-size: 20px;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+`;
+
+const PanelBody = styled.div`
+  padding: 12px;
+`;
+
+const PanelSection = styled.div`
+`;
+
+const SectionTitle = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+`;
+
