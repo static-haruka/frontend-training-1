@@ -8,30 +8,31 @@ type MenuKey = 'purchase' | 'stock' | 'customer';
 
 type SubItem = {
   label: string;
+  icon: string;
 };
 
 const MENU: Record<MenuKey, { label: string; subItems: SubItem[] }> = {
   purchase: {
     label: '買取\n査定',
     subItems: [
-      { label: '新規買取査定' },
-      { label: '買取契約の締結' },
-      { label: '仮入庫前一覧' },
-      { label: '査定ランク編集' },
+      { label: '新規買取査定', icon: '/icons/icons8-camera.png' },
+      { label: '買取契約の締結', icon: '/icons/icons8-pencil.png' },
+      { label: '仮入庫前一覧', icon: '/icons/icons8-sub.png' },
+      { label: '査定ランク編集', icon: '/icons/icons8-rank.png' },
     ],
   },
   stock: {
     label: '入庫',
     subItems: [
-      { label: '入庫サブメニュー1' },
-      { label: '入庫サブメニュー2' },
+      { label: '入庫サブメニュー', icon: '/icons/icons8-sub.png' },
+      { label: '入庫サブメニュー', icon: '/icons/icons8-sub.png' },
     ],
   },
   customer: {
     label: '顧客\n情報',
     subItems: [
-      { label: '新規顧客登録' },
-      { label: 'Croooober ID検索' },
+      { label: '新規顧客登録', icon: '/icons/icons8-sinki.png' },
+      { label: 'Croooober ID検索', icon: '/icons/icons8-id.png' },
     ],
   },
 };
@@ -63,7 +64,9 @@ export default function Sidebar() {
               <SubMenuList>
                 {MENU.purchase.subItems.map((item, index) => (
                   <SubMenuRow key={`purchase-${index}-${item.label}`}>
-                    <SubMenuIcon aria-hidden="true" />
+                    <SubMenuIcon aria-hidden="true">
+                      <img src={item.icon} alt="" />
+                    </SubMenuIcon>
                     <SubMenuText>{item.label}</SubMenuText>
                   </SubMenuRow>
                 ))}
@@ -80,7 +83,9 @@ export default function Sidebar() {
               <SubMenuList>
                 {MENU.stock.subItems.map((item, index) => (
                   <SubMenuRow key={`stock-${index}-${item.label}`}>
-                    <SubMenuIcon aria-hidden="true" />
+                    <SubMenuIcon aria-hidden="true">
+                      <img src={item.icon} alt="" />
+                    </SubMenuIcon>
                     <SubMenuText>{item.label}</SubMenuText>
                   </SubMenuRow>
                 ))}
@@ -97,7 +102,9 @@ export default function Sidebar() {
               <SubMenuList>
                 {MENU.customer.subItems.map((item, index) => (
                   <SubMenuRow key={`customer-${index}-${item.label}`}>
-                    <SubMenuIcon aria-hidden="true" />
+                    <SubMenuIcon aria-hidden="true">
+                      <img src={item.icon} alt="" />
+                    </SubMenuIcon>
                     <SubMenuText>{item.label}</SubMenuText>
                   </SubMenuRow>
                 ))}
@@ -123,7 +130,9 @@ export default function Sidebar() {
                 <SubMenuList>
                   {MENU[key].subItems.map((item, index) => (
                     <SubMenuRow key={`${key}-${index}-${item.label}`}>
-                      <SubMenuIcon aria-hidden="true" />
+                      <SubMenuIcon aria-hidden="true">
+                        <img src={item.icon} alt="" />
+                      </SubMenuIcon>
                       <SubMenuText>{item.label}</SubMenuText>
                     </SubMenuRow>
                   ))}
@@ -178,8 +187,24 @@ const SidebarChevron = styled.button`
 
 const SidebarNav = styled.nav``;
 
+const SubMenuPanel = styled.div`
+  position: absolute;
+  left: 72px;
+  top: 0px;
+  width: 300px;
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 2px;
+`;
+
 const SidebarItem = styled.div`
   position: relative;
+
+  &:hover ${SubMenuPanel} {
+  opacity: 1;
+  pointer-events: auto;
+  }
 `;
 
 const SidebarItemLink = styled(Link)`
@@ -205,14 +230,6 @@ const SidebarItemText = styled.span`
   white-space: pre-line;
 `;
 
-const SubMenuPanel = styled.div`
-  position: absolute;
-  left: 72px;
-  top: 0;
-  width: 320px;
-  opacity: 0;
-`;
-
 const SubMenuList = styled.div`
 `;
 
@@ -220,7 +237,8 @@ const SubMenuRow = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 10px 16px;
+
 
   & + & {
     border-top: none;
@@ -232,6 +250,18 @@ const SubMenuIcon = styled.div`
   height: 28px;
   border-radius: 4px;
   background: #0075af;
+  // margin-left: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  }
 `;
 
 const SubMenuText = styled.div`
@@ -247,9 +277,10 @@ const Panel = styled.div<{ $open: boolean }>`
   margin-top: 56px;
   top: 0;
   height: 100vh;
-  width: 320px;
+  width: 210px;
   background: #ffffff;
-  border-right: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 2px;
 
   transform: ${(p) => (p.$open ? 'translateX(0)' : 'translateX(-100%)')};
 
@@ -258,16 +289,17 @@ const Panel = styled.div<{ $open: boolean }>`
 `;
 
 const PanelHeader = styled.div`
-  height: 56px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
 `;
 
 const CloseButton = styled.button`
   margin-left: auto;
   width: 32px;
   font-size: 20px;
+  color: #0075af;
+  font-weight: 600;
 
   &:hover {
     background: #f3f4f6;
@@ -279,11 +311,15 @@ const PanelBody = styled.div`
 `;
 
 const PanelSection = styled.div`
+  & + & {
+    margin-top: 16px;
+  }
 `;
 
 const SectionTitle = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
+  padding-left: 14px;
 `;
 

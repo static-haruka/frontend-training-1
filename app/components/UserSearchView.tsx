@@ -113,7 +113,8 @@ const Card = styled.section`
 const SearchRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 35px;
+  margin-bottom: 32px;
 `;
 
 const Title = styled.div`
@@ -167,36 +168,40 @@ const SearchButton = styled.button`
 `;
 
 const Table = styled.table`
-  margin-top: 18px;
+  margin-top: 24px;
   width: 100%;
   border-collapse: collapse;
 
   th,
   td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    font-size: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 20px;
+    font-size: 14px;
   }
 
   th {
-    background: #f9fafb;
+    background: #eaf3fb; 
     text-align: left;
     font-weight: 600;
+    padding: 10px 28px;
   }
 `;
 
 const TableRow = styled.tr<{ $selected: boolean }>`
-  background: ${(p) => (p.$selected ? '#eaf3fb' : 'transparent')};
+  background: ${(p) => (p.$selected ? '#f3f4f6' : 'transparent')};
 
   &:hover {
+    background: #f3f4f6;
   }
 `;
+
 
 const ButtonRow = styled.div`
   margin-top: 22px;
   display: flex;
   justify-content: center;
   gap: 22px;
+  margin-top: 40px;
 `;
 
 const BackButton = styled.button`

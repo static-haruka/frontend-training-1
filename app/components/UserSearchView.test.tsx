@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UserSearchView from './UserSearchView';
+import { MOCK_USERS } from '../user_search/mockUsers';
 
-const USERS = [
-  { crooooberId: '123', name: '山田', phone: '090', address: '東京' },
-  { crooooberId: '456', name: '小池', phone: '080', address: '神奈川' },
-];
+
+const USERS = MOCK_USERS;
 
 function renderView(override?: Partial<React.ComponentProps<typeof UserSearchView>>) {
   const props: React.ComponentProps<typeof UserSearchView> = {
@@ -35,11 +34,10 @@ test('行クリックで onSelectUser が選択IDで呼ばれる', async () => {
 
   renderView({ onSelectUser });
 
-  // 行内のテキストをクリック（IDセル）
-  await user.click(screen.getByText('123'));
+  await user.click(screen.getByText('12345678901234'));
 
   expect(onSelectUser).toHaveBeenCalledTimes(1);
-  expect(onSelectUser).toHaveBeenCalledWith('123');
+  expect(onSelectUser).toHaveBeenCalledWith('12345678901234');
 });
 
 test('選択済みなら決定ボタンが押せて onDecide が呼ばれる', async () => {
@@ -66,3 +64,47 @@ test('戻るボタンで onBack が呼ばれる', async () => {
 
   expect(onBack).toHaveBeenCalledTimes(1);
 });
+
+test('keywordが空ならテーブルは表示されない', () => {
+  renderView({ keyword: '   ' }); 
+
+  expect(screen.queryByText('Croooober ID')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '戻る' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '決定' })).not.toBeInTheDocument();
+});
+
+test('usersが空ならテーブルは表示されない', () => {
+  renderView({ users: [] });
+
+  expect(screen.queryByText('Croooober ID')).not.toBeInTheDocument();
+});
+
+test('入力すると onChangeKeyword が呼ばれる', async () => {
+  const user = userEvent.setup();
+  const onChangeKeyword = jest.fn();
+
+  renderView({ keyword: '', onChangeKeyword });
+
+  const input = screen.getByPlaceholderText('キーワード・電話番号で検索');
+  await user.type(input, 'abc');
+
+expect(onChangeKeyword).toHaveBeenCalledTimes(3);
+expect(onChangeKeyword).toHaveBeenNthCalledWith(1, 'a');
+expect(onChangeKeyword).toHaveBeenNthCalledWith(2, 'b');
+expect(onChangeKeyword).toHaveBeenNthCalledWith(3, 'c');
+});
+
+test('検索ボタンで onSearch が呼ばれる', async () => {
+  const user = userEvent.setup();
+  const onSearch = jest.fn();
+
+  renderView({ onSearch });
+
+  await user.click(screen.getByRole('button', { name: '検索' }));
+
+  expect(onSearch).toHaveBeenCalledTimes(1);
+});
+
+
+
+
