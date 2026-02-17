@@ -47,15 +47,17 @@ export default function CustomerSidePanel({ customer }: Props) {
 }
 
 const Wrap = styled.aside`
-  width: 240px;
-  border-right: 1px solid #e6e6e6;
+  width: 268px;
+  min-width: 268px;
+  border-right: 1px solid #e9e9e9;
   background: #fff;
 `;
 
 const CustomerBox = styled.div`
-  background: #eef7ff;
-  padding: 16px;
+  background: #eaf6ff;
+  padding: 18px 16px 16px;
   border-bottom: 1px solid #e6e6e6;
+  text-align: center;
 `;
 
 const GrooooberId = styled.div`
@@ -65,60 +67,72 @@ const GrooooberId = styled.div`
 `;
 
 const GrooooberIdValue = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
+  letter-spacing: 0.02em;
 `;
 
 const NameRow = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: center;
+  gap: 6px;
   margin: 10px 0 8px;
 `;
 
 const Name = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
 `;
 
 const NameSuffix = styled.div`
-  margin-left: 6px;
   font-size: 12px;
   color: #333;
 `;
 
 const EditLink = styled.a`
-  display: block;
-  text-align: center;
+  display: inline-block;
+  margin-top: 2px;
   font-size: 12px;
   color: #1b6bd1;
-  text-decoration: underline;
+  text-decoration: none;
+  padding: 6px 8px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
 const SectionTitle = styled.div`
-  padding: 12px 16px;
-  font-weight: 700;
+  padding: 14px 16px 12px;
+  font-weight: 800;
+  color: #111;
   border-bottom: 1px solid #e6e6e6;
 `;
 
 const Cars = styled.div`
-  padding: 10px 12px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 `;
 
 const CarCard = styled.div`
   display: flex;
   gap: 10px;
+  align-items: center;
 `;
 
 const CarThumb = styled.div`
-  width: 48px;
-  height: 36px;
-  border: 1px solid #e6e6e6;
-  border-radius: 4px;
-  background: #fafafa;
+  width: 44px;
+  height: 34px;
+  border: 1px solid #dcdcdc;
+  border-radius: 3px;
+  background: #fff;
 `;
 
 const CarText = styled.div`
@@ -127,34 +141,49 @@ const CarText = styled.div`
 
 const CarMaker = styled.div`
   font-size: 10px;
-  color: #777;
+  color: #666;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 `;
 
 const CarModel = styled.div`
   font-size: 16px;
-  font-weight: 700;
-  line-height: 1.1;
+  font-weight: 800;
+  line-height: 1.15;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const CarNote = styled.div`
   margin-top: 4px;
   font-size: 11px;
   color: #1b6bd1;
+  font-weight: 600;
 `;
 
 const Buttons = styled.div`
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
 const ActionButton = styled.button`
-  height: 36px;
-  border-radius: 6px;
-  border: 1px solid #8fb9ff;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid #9cc3ff;
   background: #fff;
   color: #1b6bd1;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
+
+  &:hover {
+    background: #f3f8ff;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;

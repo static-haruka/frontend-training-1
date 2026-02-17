@@ -89,15 +89,24 @@ const SearchInput = styled.input`
 `;
 
 const SearchButton = styled.button`
-  height: 34px;
-  padding: 0 16px;
+  height: 36px;
+  padding: 0 18px;
   border-radius: 6px;
-  border: 1px solid #1b6bd1;
-  background: #1b6bd1;
+  border: 1px solid #2f80ed;
+  background: #2f80ed;
   color: #fff;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
+
+  &:hover {
+    background: #256fd4;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;
+
 
 const RightArea = styled.div`
   display: flex;

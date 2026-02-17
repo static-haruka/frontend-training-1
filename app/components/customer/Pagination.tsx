@@ -21,7 +21,7 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         {pages.map((p) => (
           <PageButton
             key={p}
-            aria-current={p === page}
+            aria-current={p === page ? "true" : "false"}
             onClick={() => onChange(p)}
           >
             {p}
@@ -54,26 +54,44 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  padding: 16px 0;
+  padding: 14px 0;
 `;
 
 const Pages = styled.div`
   display: flex;
   gap: 8px;
+
+  max-width: 420px;
+  overflow: hidden;
 `;
 
 const PageButton = styled.button`
   width: 28px;
   height: 28px;
   border-radius: 4px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
+
+  font-size: 12px;
+  color: #333;
+
+  &:hover {
+    background: #f6f6f6;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 
   &[aria-current="true"] {
     background: #111;
     color: #fff;
     border-color: #111;
+  }
+
+  &[aria-current="true"]:hover {
+    background: #111;
   }
 `;
 
@@ -81,12 +99,23 @@ const PagerButton = styled.button`
   height: 28px;
   padding: 0 10px;
   border-radius: 4px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
 
+  font-size: 12px;
+  color: #333;
+
+  &:hover:not(:disabled) {
+    background: #f6f6f6;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.45;
     cursor: not-allowed;
   }
 `;
