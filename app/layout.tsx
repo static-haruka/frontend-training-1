@@ -1,6 +1,11 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next"; // ページの <title> や <meta> を型付きで定義するため
+import { Geist, Geist_Mono } from "next/font/google"; // Google Fonts を Next公式の方法で読み込む
 import "./globals.css";
+import StyledComponentsRegistry from "./lib/styled-components-registry"; // styled-components をSSR対応で安全にするラッパー
+import styled from "styled-components";
+import Link from "next/link";
+import Sidebar from "./components/Sidebar";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +28,70 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="ja">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <StyledComponentsRegistry>
+          <App>
+            <Body>
+              <Sidebar />
+              <Main>
+                <Header>
+                  <HeaderLeft>
+                    <HeaderTitle>メンテナンスノート</HeaderTitle>
+                  </HeaderLeft>
+                  <HeaderRight>UPGARAGE練馬店</HeaderRight>
+                </Header>
+                <Content>{children}</Content>
+              </Main>
+            </Body>
+          </App>
+
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
 }
+
+/* ---------- styles ---------- */
+
+const App = styled.div`
+  height: 100vh;
+  display: flex;
+`;
+
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+`;
+
+const Main = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.header`
+  height: 56px;
+  background:  #F7F7F7;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+`;
+
+const HeaderLeft = styled.div`
+`;
+
+const HeaderTitle = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const HeaderRight = styled.div`
+  margin-left: auto;
+  font-size: 12px;
+`;
+
+const Content = styled.main`
+  flex: 1;
+`;
