@@ -2,7 +2,12 @@
 
 import styled from "styled-components";
 import { useMemo, useState } from "react";
-import { mockCustomer, mockTransactions, Transaction, TransactionKind } from "./mocks";
+import {
+  mockCustomer,
+  mockTransactions,
+  Transaction,
+  TransactionKind,
+} from "./mocks";
 import TopTabs from "./TopTabs";
 import CustomerSidePanel from "./CustomerSidePanel";
 import HistoryFilters, { FilterState } from "./HistoryFilters";
@@ -14,7 +19,6 @@ type Props = {
 };
 
 export default function CustomerTopView({ customerId }: Props) {
-
   const customer = mockCustomer;
 
   const [filters, setFilters] = useState<FilterState>({
@@ -23,35 +27,25 @@ export default function CustomerTopView({ customerId }: Props) {
     from: "",
     to: "",
     hasCommentOnly: false,
-    sort: "registered_desc",
   });
 
-  const filtered = useMemo(() => {
-    const list = mockTransactions.slice();
+const filtered = useMemo(() => {
+  const list = mockTransactions.slice();
 
-    list.sort((a, b) => {
-      if (filters.sort === "registered_asc") {
-        return a.sortAt.localeCompare(b.sortAt);
-      }
-      return b.sortAt.localeCompare(a.sortAt);
-    });
+  const byCar = filters.carId
+    ? list.filter((t) => t.carId === filters.carId)
+    : list;
 
-    const byCar = filters.carId
-      ? list.filter((t) => t.carId === filters.carId)
-      : list;
+  const byComment = filters.hasCommentOnly
+    ? byCar.filter((t) => t.hasComment)
+    : byCar;
 
-    const byComment = filters.hasCommentOnly
-      ? byCar.filter((t) => t.hasComment)
-      : byCar;
+  const byKeyword = filters.keyword.trim()
+    ? byComment.filter((t) => containsKeyword(t, filters.keyword, customer))
+    : byComment;
 
-    const byKeyword = filters.keyword.trim()
-      ? byComment.filter((t) => containsKeyword(t, filters.keyword))
-      : byComment;
-
-    const byPeriod = filterByPeriod(byKeyword, filters.from, filters.to);
-
-    return byPeriod;
-  }, [filters]);
+  return filterByPeriod(byKeyword, filters.from, filters.to);
+}, [filters, customer]);
 
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -92,7 +86,10 @@ export default function CustomerTopView({ customerId }: Props) {
                   type="checkbox"
                   checked={filters.hasCommentOnly}
                   onChange={(e) =>
-                    handleChangeFilters({ ...filters, hasCommentOnly: e.target.checked })
+                    handleChangeFilters({
+                      ...filters,
+                      hasCommentOnly: e.target.checked,
+                    })
                   }
                 />
                 <span>メモ付きのみ</span>
@@ -113,14 +110,29 @@ export default function CustomerTopView({ customerId }: Props) {
   );
 }
 
-function containsKeyword(t: Transaction, keyword: string) {
+/* helper functions */
+
+export function containsKeyword(
+  t: Transaction,
+  keyword: string,
+  customer: {
+    cars: { id: string; maker: string; model: string; nickname?: string }[];
+  }
+) {
   const k = keyword.trim().toLowerCase();
   if (!k) return true;
+
+  const car = customer.cars.find((c) => c.id === t.carId);
+  const carText = car
+    ? [car.maker, car.model, car.nickname ?? ""].join(" ")
+    : "";
 
   const hay = [
     t.title,
     t.statusLabel ?? "",
     t.shopLabel ?? "",
+    t.carLabel ?? "",
+    carText,
     kindLabel(t.kind),
   ]
     .join(" ")
@@ -129,11 +141,19 @@ function containsKeyword(t: Transaction, keyword: string) {
   return hay.includes(k);
 }
 
-function filterByPeriod(list: Transaction[], from: string, to: string) {
+export function filterByPeriod(
+  list: Transaction[],
+  from: string,
+  to: string
+) {
   if (!from && !to) return list;
 
-  const fromAt = from ? new Date(from + "T00:00:00Z").getTime() : null;
-  const toAt = to ? new Date(to + "T23:59:59Z").getTime() : null;
+  const fromAt = from
+    ? new Date(from + "T00:00:00Z").getTime()
+    : null;
+  const toAt = to
+    ? new Date(to + "T23:59:59Z").getTime()
+    : null;
 
   return list.filter((t) => {
     const ts = new Date(t.sortAt).getTime();
@@ -143,7 +163,7 @@ function filterByPeriod(list: Transaction[], from: string, to: string) {
   });
 }
 
-function kindLabel(kind: TransactionKind) {
+export function kindLabel(kind: TransactionKind) {
   if (kind === "purchase") return "購入履歴";
   if (kind === "assessment") return "査定履歴";
   if (kind === "work") return "作業履歴";

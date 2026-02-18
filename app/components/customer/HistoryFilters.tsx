@@ -3,15 +3,12 @@
 import styled from "styled-components";
 import type { Car } from "./mocks";
 
-export type SortKey = "registered_desc" | "registered_asc";
-
 export type FilterState = {
   keyword: string;
   carId: string;
   from: string;
   to: string;
   hasCommentOnly: boolean;
-  sort: SortKey;
 };
 
 type Props = {
@@ -33,15 +30,16 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
       </SearchArea>
 
       <RightArea>
-
         <Period>
           <DateInput
+            aria-label="開始日"
             type="date"
             value={value.from}
             onChange={(e) => onChange({ ...value, from: e.target.value })}
           />
           <Tilde>〜</Tilde>
           <DateInput
+            aria-label="終了日"
             type="date"
             value={value.to}
             onChange={(e) => onChange({ ...value, to: e.target.value })}
@@ -49,6 +47,7 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
         </Period>
 
         <RegisteredCarSelect
+          aria-label="愛車"
           value={value.carId}
           onChange={(e) => onChange({ ...value, carId: e.target.value })}
         >
@@ -107,19 +106,10 @@ const SearchButton = styled.button`
   }
 `;
 
-
 const RightArea = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-`;
-
-const CarSelect = styled.select`
-  height: 34px;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  padding: 0 10px;
-  background: #fff;
 `;
 
 const Period = styled.div`
