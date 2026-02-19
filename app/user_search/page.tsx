@@ -1,6 +1,7 @@
 'use client'; /* Styled Components を使うために明示（ブラウザで動くコンポーネントを生成） */
 
 import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import UserSearchView from '../components/UserSearchView';
 import { MOCK_USERS } from './mockUsers';
 
@@ -14,6 +15,8 @@ export type User = {
 };
 
 export default function UserSearchPage() {
+  const router = useRouter();
+
   const [keyword, setKeyword] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -26,8 +29,7 @@ export default function UserSearchPage() {
     );
   }, [keyword]);
 
-  const handleSearch = () => {
-  };
+  const handleSearch = () => {};
 
   const handleBack = () => {
     setSelectedId(null);
@@ -36,9 +38,7 @@ export default function UserSearchPage() {
   const handleDecide = () => {
     if (selectedId === null) return;
 
-    // 次チケットで「ユーザー詳細へ遷移」に差し替え
-    const selectedUser = USERS.find((u) => u.crooooberId === selectedId);
-    console.log('Decide user:', selectedUser);
+    router.push(`/customer/${selectedId}`);
   };
 
   return (
@@ -46,7 +46,7 @@ export default function UserSearchPage() {
       keyword={keyword}
       onChangeKeyword={(v) => {
         setKeyword(v);
-        setSelectedId(null); // 検索条件が変わったら選択はリセット
+        setSelectedId(null);
       }}
       users={filteredUsers}
       selectedId={selectedId}

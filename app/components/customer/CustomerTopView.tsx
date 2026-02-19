@@ -2,9 +2,10 @@
 
 import styled from "styled-components";
 import { useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import {
-  mockCustomer,
-  mockTransactions,
+  fetchCustomer,
+  fetchTransactions,
   Transaction,
   TransactionKind,
 } from "./mocks";
@@ -14,12 +15,22 @@ import HistoryFilters, { FilterState } from "./HistoryFilters";
 import HistoryList from "./HistoryList";
 import Pagination from "./Pagination";
 
-type Props = {
-  customerId: string;
-};
+export default function CustomerTopView() {
+  const params = useParams();
 
-export default function CustomerTopView({ customerId }: Props) {
-  const customer = mockCustomer;
+  const raw = (params as any)?.customerId;
+  const customerId =
+    typeof raw === "string" ? raw : raw?.[0] ?? "";
+
+  const customer = useMemo(() => {
+    const id = customerId || "12345678901234";
+    return fetchCustomer(id);
+  }, [customerId]);
+
+  const transactions = useMemo(() => {
+    const id = customerId || "12345678901234";
+    return fetchTransactions(id);
+  }, [customerId]);
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: "",
@@ -29,23 +40,23 @@ export default function CustomerTopView({ customerId }: Props) {
     hasCommentOnly: false,
   });
 
-const filtered = useMemo(() => {
-  const list = mockTransactions.slice();
+  const filtered = useMemo(() => {
+    const list = transactions.slice();
 
-  const byCar = filters.carId
-    ? list.filter((t) => t.carId === filters.carId)
-    : list;
+    const byCar = filters.carId
+      ? list.filter((t) => t.carId === filters.carId)
+      : list;
 
-  const byComment = filters.hasCommentOnly
-    ? byCar.filter((t) => t.hasComment)
-    : byCar;
+    const byComment = filters.hasCommentOnly
+      ? byCar.filter((t) => t.hasComment)
+      : byCar;
 
-  const byKeyword = filters.keyword.trim()
-    ? byComment.filter((t) => containsKeyword(t, filters.keyword, customer))
-    : byComment;
+    const byKeyword = filters.keyword.trim()
+      ? byComment.filter((t) => containsKeyword(t, filters.keyword, customer))
+      : byComment;
 
-  return filterByPeriod(byKeyword, filters.from, filters.to);
-}, [filters, customer]);
+    return filterByPeriod(byKeyword, filters.from, filters.to);
+  }, [filters, customer, transactions]);
 
   const pageSize = 5;
   const [page, setPage] = useState(1);
@@ -230,3 +241,4 @@ const CommentOnly = styled.label`
     height: 14px;
   }
 `;
+

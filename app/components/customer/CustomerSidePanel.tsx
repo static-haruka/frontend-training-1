@@ -11,8 +11,8 @@ export default function CustomerSidePanel({ customer }: Props) {
   return (
     <Wrap>
       <CustomerBox>
-        <GrooooberId>Groooober ID</GrooooberId>
-        <GrooooberIdValue>{customer.grooooberId}</GrooooberIdValue>
+        <CrooooberId>Croooober ID</CrooooberId>
+        <CrooooberIdValue>{customer.crooooberId}</CrooooberIdValue>
 
         <NameRow>
           <Name>{customer.name}</Name>
@@ -60,13 +60,13 @@ const CustomerBox = styled.div`
   text-align: center;
 `;
 
-const GrooooberId = styled.div`
+const CrooooberId = styled.div`
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 6px;
 `;
 
-const GrooooberIdValue = styled.div`
+const CrooooberIdValue = styled.div`
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;

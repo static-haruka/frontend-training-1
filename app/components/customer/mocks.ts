@@ -9,7 +9,7 @@ export type Car = {
 
 export type Customer = {
   id: string;
-  grooooberId: string;
+  crooooberId: string;
   name: string;
   cars: Car[];
 };
@@ -40,7 +40,7 @@ export type Transaction = {
 
 export const mockCustomer: Customer = {
   id: "123",
-  grooooberId: "12345678901234",
+  crooooberId: "12345678901234",
   name: "山田太郎",
   cars: [
     {
@@ -152,3 +152,55 @@ export const mockTransactions: Transaction[] = [
     icon: "gear",
   },
 ];
+
+export const mockCustomer2: Customer = {
+  id: "456",
+  crooooberId: "98382329238838",
+  name: "小池若奈",
+  cars: [
+    {
+      id: "car-3",
+      maker: "TOYOTA",
+      model: "PRIUS",
+      note: "点検の案内あり",
+    },
+  ],
+};
+
+export const mockTransactions2: Transaction[] = [
+  {
+    id: "t-200",
+    kind: "work",
+    carId: "car-3",
+    carLabel: "プリウス",
+    date: "2022.9.10",
+    sortAt: "2022-09-10T10:00:00Z",
+    title: "オイル交換",
+    amount: 5000,
+    hasComment: true,
+    shopLabel: "店舗A",
+    icon: "gear",
+  },
+  {
+    id: "t-201",
+    kind: "reservation",
+    carId: "car-3",
+    carLabel: "プリウス",
+    date: "2022.9.28",
+    sortAt: "2022-09-28T09:00:00Z",
+    title: "12ヶ月点検 予約",
+    hasComment: false,
+    shopLabel: "店舗A",
+    icon: "link",
+  },
+];
+
+export function fetchCustomer(crooooberId: string): Customer {
+  if (crooooberId === mockCustomer2.crooooberId) return mockCustomer2;
+  return mockCustomer;
+}
+
+export function fetchTransactions(crooooberId: string): Transaction[] {
+  if (crooooberId === mockCustomer2.crooooberId) return mockTransactions2;
+  return mockTransactions;
+}
