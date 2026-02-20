@@ -149,18 +149,19 @@ export default function Sidebar() {
 }
 
 /* ---------- styles ---------- */
+const SIDEBAR_SIZE = 56;
 
 const SidebarWrap = styled.aside`
   display: flex;
 `;
 
 const SidebarBase = styled.div`
-  width: 72px;
+  width: ${SIDEBAR_SIZE}px;
   border-right: 1px solid #e5e7eb;
 `;
 
 const SidebarTop = styled.div`
-  height: 56px;
+  height: ${SIDEBAR_SIZE}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,33 +170,52 @@ const SidebarTop = styled.div`
 
 const LogoMark = styled.div`
   width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
 `;
 
 const SidebarChevron = styled.button`
-  height: 56px;
+  height: ${SIDEBAR_SIZE}px;
+  width: ${SIDEBAR_SIZE}px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #e5e7eb;
 
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #e5e7eb;
+  line-height: 0;
+
   img {
     width: 20px;
+    height: 20px;
+    display: block;
   }
-
-  width: 72px;
 `;
 
 const SidebarNav = styled.nav``;
 
 const SubMenuPanel = styled.div`
   position: absolute;
-  left: 72px;
+  left: ${SIDEBAR_SIZE}px;
   top: 0px;
   width: 300px;
   opacity: 0;
   pointer-events: none;
   border: 1px solid #e5e7eb;
   border-radius: 2px;
+  background: #fff;
 `;
 
 const SidebarItem = styled.div`
@@ -277,7 +297,7 @@ const Panel = styled.div<{ $open: boolean }>`
   margin-top: 56px;
   top: 0;
   height: 100vh;
-  width: 210px;
+  width: 220px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 2px;

@@ -25,16 +25,25 @@ export default function CustomerSidePanel({ customer }: Props) {
       <SectionTitle>愛車一覧</SectionTitle>
 
       <Cars>
-        {customer.cars.map((c) => (
-          <CarCard key={c.id}>
-            <CarThumb />
-            <CarText>
-              <CarMaker>{c.maker}</CarMaker>
-              <CarModel>{c.model}</CarModel>
-              {c.note ? <CarNote>{c.note}</CarNote> : null}
-            </CarText>
-          </CarCard>
-        ))}
+        {customer.cars.map((c) => {
+          const src = c.image
+            ? c.image.startsWith("/") ? c.image : `/${c.image}`
+            : null;
+
+          return (
+            <CarCard key={c.id}>
+              <CarThumb aria-hidden="true">
+                {src ? <img src={src} alt="" /> : null}
+              </CarThumb>
+
+              <CarText>
+                <CarMaker>{c.maker}</CarMaker>
+                <CarModel>{c.model}</CarModel>
+                {c.note ? <CarNote>{c.note}</CarNote> : null}
+              </CarText>
+            </CarCard>
+          );
+        })}
       </Cars>
 
       <Buttons>
@@ -45,6 +54,8 @@ export default function CustomerSidePanel({ customer }: Props) {
     </Wrap>
   );
 }
+
+/* ---------- styles ---------- */
 
 const Wrap = styled.aside`
   width: 268px;
@@ -130,9 +141,25 @@ const CarCard = styled.div`
 const CarThumb = styled.div`
   width: 44px;
   height: 34px;
+  min-width: 44px;
+  min-height: 34px;
+  flex: 0 0 44px;
+
   border: 1px solid #dcdcdc;
   border-radius: 3px;
   background: #fff;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 `;
 
 const CarText = styled.div`

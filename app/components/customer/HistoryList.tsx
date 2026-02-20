@@ -21,9 +21,12 @@ export default function HistoryList({ items }: Props) {
           <Meta>
             <MetaDate>{t.date}</MetaDate>
             <MetaLine>
-              <MetaCar>{t.carLabel}</MetaCar>
+              <MetaCar $isUnset={t.statusLabel === "未設定"}>
+                {t.carLabel}
+              </MetaCar>
+
               <KindTag kind={t.kind}>{kindLabel(t.kind)}</KindTag>
-              {t.statusLabel ? <StatusTag>{t.statusLabel}</StatusTag> : null}
+
             </MetaLine>
           </Meta>
 
@@ -44,13 +47,10 @@ export default function HistoryList({ items }: Props) {
     </Wrap>
   );
 }
-
+// 表示用
 function kindLabel(kind: TransactionKind) {
   if (kind === "purchase") return "購入履歴";
-  if (kind === "assessment") return "査定履歴";
-  if (kind === "work") return "作業履歴";
-  if (kind === "reservation") return "作業予約";
-  return "検討中パーツ";
+  return "査定履歴";
 }
 
 /* ---------- styles ---------- */
@@ -125,8 +125,11 @@ const MetaLine = styled.div`
   min-width: 0;
 `;
 
-const MetaCar = styled.div`
-  color: #666;
+const MetaCar = styled.div<{ $isUnset: boolean }>`
+  color: ${(p) => (p.$isUnset ? "#d60000" : "#666")};
+
+  flex: 0 0 120px;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -136,18 +139,22 @@ const KindTag = styled.span<{ kind: TransactionKind }>`
   font-size: 10px;
   padding: 3px 8px;
   border-radius: 4px;
-  background: #f2f2f2;
-  color: #333;
   white-space: nowrap;
-`;
 
-const StatusTag = styled.span`
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  background: #e6f5ea;
-  color: #1d7d3a;
-  white-space: nowrap;
+  color: #000;
+  background: #f2f2f2;
+
+  ${(p) =>
+    p.kind === "purchase" &&
+    `
+      background: #fff3c4;
+    `}
+
+  ${(p) =>
+    p.kind === "assessment" &&
+    `
+      background: #e6f5ea;
+    `}
 `;
 
 const Title = styled.div`

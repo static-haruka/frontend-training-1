@@ -174,12 +174,11 @@ export function filterByPeriod(
   });
 }
 
+// 検索用（containsKeyword用）
 export function kindLabel(kind: TransactionKind) {
   if (kind === "purchase") return "購入履歴";
   if (kind === "assessment") return "査定履歴";
-  if (kind === "work") return "作業履歴";
-  if (kind === "reservation") return "作業予約";
-  return "検討中パーツ";
+  return "";
 }
 
 /* ---------- styles ---------- */
@@ -214,12 +213,16 @@ const Divider = styled.div`
 const CountRow = styled.div`
   display: flex;
   align-items: center;
-  margin: 10px 0 10px;
+
+  height: 44px;
+  padding: 0; 
 `;
 
 const CountText = styled.div`
   font-size: 12px;
   color: #666;
+
+  line-height: 1;
 `;
 
 const RightTools = styled.div`

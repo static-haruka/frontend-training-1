@@ -4,7 +4,7 @@ export type Car = {
   model: string;
   nickname?: string;
   note?: string;
-  imageUrl?: string;
+  image?: string;
 };
 
 export type Customer = {
@@ -16,10 +16,7 @@ export type Customer = {
 
 export type TransactionKind =
   | "purchase"
-  | "assessment"
-  | "work"
-  | "reservation"
-  | "considering";
+  | "assessment";
 
 export type TransactionIcon = "circle" | "link" | "gear";
 
@@ -48,11 +45,13 @@ export const mockCustomer: Customer = {
       maker: "NISSAN",
       model: "R35",
       note: "車検まであと1ヶ月です",
+      image: "/images/nissan-r35.jpeg",
     },
     {
       id: "car-2",
       maker: "MAZDA",
       model: "ROADSTAR",
+      image: "/images/mazda-roadstar.jpg",
     },
   ],
 };
@@ -68,21 +67,21 @@ export const mockTransactions: Transaction[] = [
     title: "GOODYEAR EAGLE REVSPEC RS-02 205/55R16",
     amount: 13138,
     hasComment: true,
-    shopLabel: "店舗1(検証用直営1)",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "circle",
   },
   {
     id: "t-2",
     kind: "purchase",
     carId: "car-1",
-    carLabel: "インプレッサ\nスポーツ",
+    carLabel: "未設定",
     date: "2022.9.9",
     sortAt: "2022-09-09T10:00:00Z",
     title: "GOODYEAR EAGLE REVSPEC RS-02 205/55R16 2",
     amount: 2500,
     hasComment: false,
     statusLabel: "未設定",
-    shopLabel: "店舗2(検証用直営2)",
+    shopLabel: "t店舗2(検証用直営2)",
     icon: "link",
   },
   {
@@ -95,7 +94,7 @@ export const mockTransactions: Transaction[] = [
     title: "GOODYEAR EAGLE REVSPEC RS-02 205/55R16 3",
     amount: 13138,
     hasComment: false,
-    shopLabel: "店舗1(検証用直営1)",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "gear",
   },
   {
@@ -108,7 +107,7 @@ export const mockTransactions: Transaction[] = [
     title: "GOODYEAR EAGLE REVSPEC RS-02 205/55R16 4",
     amount: 2500,
     hasComment: false,
-    shopLabel: "店舗3(検証用直営3)",
+    shopLabel: "t店舗3(検証用直営3)",
     icon: "link",
   },
   {
@@ -121,7 +120,7 @@ export const mockTransactions: Transaction[] = [
     title: "GOODYEAR EAGLE REVSPEC RS-02 205/55R16 5",
     amount: 13138,
     hasComment: false,
-    shopLabel: "店舗1(検証用直営1)",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "circle",
   },
 
@@ -135,12 +134,12 @@ export const mockTransactions: Transaction[] = [
     title: "DUMMY ITEM 6",
     amount: 9800,
     hasComment: false,
-    shopLabel: "店舗2(検証用直営2)",
+    shopLabel: "t店舗2(検証用直営2)",
     icon: "link",
   },
   {
     id: "t-7",
-    kind: "work",
+    kind: "purchase",
     carId: "car-1",
     carLabel: "インプレッサ\nスポーツ",
     date: "2022.8.01",
@@ -148,7 +147,7 @@ export const mockTransactions: Transaction[] = [
     title: "DUMMY ITEM 7",
     amount: 12000,
     hasComment: false,
-    shopLabel: "店舗1(検証用直営1)",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "gear",
   },
 ];
@@ -163,6 +162,7 @@ export const mockCustomer2: Customer = {
       maker: "TOYOTA",
       model: "PRIUS",
       note: "点検の案内あり",
+      image: "/images/toyota-prius.jpg",
     },
   ],
 };
@@ -170,27 +170,28 @@ export const mockCustomer2: Customer = {
 export const mockTransactions2: Transaction[] = [
   {
     id: "t-200",
-    kind: "work",
+    kind: "purchase",
     carId: "car-3",
     carLabel: "プリウス",
     date: "2022.9.10",
     sortAt: "2022-09-10T10:00:00Z",
-    title: "オイル交換",
+    title: "DUMMY ITEM 1",
     amount: 5000,
     hasComment: true,
-    shopLabel: "店舗A",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "gear",
   },
   {
     id: "t-201",
-    kind: "reservation",
+    kind: "assessment",
     carId: "car-3",
     carLabel: "プリウス",
     date: "2022.9.28",
     sortAt: "2022-09-28T09:00:00Z",
-    title: "12ヶ月点検 予約",
+    title: "DUMMY ITEM 2",
+    amount: 3000,
     hasComment: false,
-    shopLabel: "店舗A",
+    shopLabel: "t店舗1(検証用直営1)",
     icon: "link",
   },
 ];

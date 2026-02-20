@@ -24,7 +24,8 @@ export default function UserSearchView({
   onBack,
   onDecide,
 }: Props) {
-  const showTable = keyword.trim() !== '' && users.length > 0;
+
+  const showTable = true;
 
   return (
     <Page>
@@ -60,25 +61,31 @@ export default function UserSearchView({
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => {
-                  const isSelected = selectedId === user.crooooberId;
+                {users.length === 0 ? (
+                  <NoResultRow>
+                    <td colSpan={4}>該当する顧客がいません</td>
+                  </NoResultRow>
+                ) : (
+                  users.map((user) => {
+                    const isSelected = selectedId === user.crooooberId;
 
-                  return (
-                    <TableRow
-                      key={user.crooooberId}
-                      $selected={isSelected}
-                      onClick={() => onSelectUser(user.crooooberId)}
-                      role="button"
-                      tabIndex={0}
-                      aria-selected={isSelected}
-                    >
-                      <td>{user.crooooberId}</td>
-                      <td>{user.name}</td>
-                      <td>{user.phone}</td>
-                      <td>{user.address}</td>
-                    </TableRow>
-                  );
-                })}
+                    return (
+                      <TableRow
+                        key={user.crooooberId}
+                        $selected={isSelected}
+                        onClick={() => onSelectUser(user.crooooberId)}
+                        role="button"
+                        tabIndex={0}
+                        aria-selected={isSelected}
+                      >
+                        <td>{user.crooooberId}</td>
+                        <td>{user.name}</td>
+                        <td>{user.phone}</td>
+                        <td>{user.address}</td>
+                      </TableRow>
+                    );
+                  })
+                )}
               </tbody>
             </Table>
 
@@ -180,7 +187,7 @@ const Table = styled.table`
   }
 
   th {
-    background: #eaf3fb; 
+    background: #eaf3fb;
     text-align: left;
     font-weight: 600;
     padding: 10px 28px;
@@ -195,6 +202,12 @@ const TableRow = styled.tr<{ $selected: boolean }>`
   }
 `;
 
+const NoResultRow = styled.tr`
+  td {
+    padding: 18px 20px;
+    color: #6b7280;
+  }
+`;
 
 const ButtonRow = styled.div`
   margin-top: 22px;

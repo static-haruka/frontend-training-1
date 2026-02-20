@@ -1,6 +1,6 @@
 'use client'; /* Styled Components を使うために明示（ブラウザで動くコンポーネントを生成） */
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import UserSearchView from '../components/UserSearchView';
 import { MOCK_USERS } from './mockUsers';
@@ -19,17 +19,23 @@ export default function UserSearchPage() {
 
   const [keyword, setKeyword] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [users, setUsers] = useState<User[]>(USERS);
 
-  const filteredUsers = useMemo(() => {
+  const handleSearch = () => {
     const q = keyword.trim();
-    if (q === '') return [];
 
-    return USERS.filter(
+    if (q === '') {
+      setUsers(USERS);
+      return;
+    }
+
+    const filtered = USERS.filter(
       (user) => user.name.includes(q) || user.phone.includes(q) || user.crooooberId.includes(q)
     );
-  }, [keyword]);
 
-  const handleSearch = () => {};
+    setUsers(filtered);
+    setSelectedId(null);
+  };
 
   const handleBack = () => {
     setSelectedId(null);
@@ -48,7 +54,7 @@ export default function UserSearchPage() {
         setKeyword(v);
         setSelectedId(null);
       }}
-      users={filteredUsers}
+      users={users}
       selectedId={selectedId}
       onSelectUser={setSelectedId}
       onSearch={handleSearch}

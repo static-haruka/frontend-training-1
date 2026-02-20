@@ -21,11 +21,18 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
   return (
     <Wrap>
       <SearchArea>
-        <SearchInput
-          placeholder="キーワードで検索"
-          value={value.keyword}
-          onChange={(e) => onChange({ ...value, keyword: e.target.value })}
-        />
+        <SearchInputWrap>
+          <SearchIcon aria-hidden="true">
+            <img src="/icons/icons8-search.png" alt="" />
+          </SearchIcon>
+
+          <SearchInput
+            placeholder="キーワードで検索"
+            value={value.keyword}
+            onChange={(e) => onChange({ ...value, keyword: e.target.value })}
+          />
+        </SearchInputWrap>
+
         <SearchButton type="button">検索</SearchButton>
       </SearchArea>
 
@@ -34,6 +41,7 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
           <DateInput
             aria-label="開始日"
             type="date"
+            required
             value={value.from}
             onChange={(e) => onChange({ ...value, from: e.target.value })}
           />
@@ -41,6 +49,7 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
           <DateInput
             aria-label="終了日"
             type="date"
+            required
             value={value.to}
             onChange={(e) => onChange({ ...value, to: e.target.value })}
           />
@@ -69,6 +78,11 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
+
+  min-width: 980px;
+
+  height: 56px;
+  border-bottom: 1px solid #e6e6e6;
 `;
 
 const SearchArea = styled.div`
@@ -78,10 +92,30 @@ const SearchArea = styled.div`
   flex: 1;
 `;
 
-const SearchInput = styled.input`
+const SearchInputWrap = styled.div`
+  position: relative;
   width: 320px;
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.55;
+  pointer-events: none;
+
+  img {
+    width: 15px;
+    height: 15px;
+    display: block;
+  }
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
   height: 34px;
-  padding: 0 12px;
+  padding: 0 12px 0 34px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   outline: none;
@@ -96,6 +130,9 @@ const SearchButton = styled.button`
   color: #fff;
   font-weight: 800;
   cursor: pointer;
+
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &:hover {
     background: #256fd4;
@@ -124,6 +161,10 @@ const DateInput = styled.input`
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+
+  &:not(:focus):invalid {
+  color: transparent;
+  }
 `;
 
 const Tilde = styled.span`
