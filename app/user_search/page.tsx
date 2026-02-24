@@ -1,6 +1,7 @@
 'use client'; /* Styled Components を使うために明示（ブラウザで動くコンポーネントを生成） */
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import UserSearchView from '../components/UserSearchView';
 import { MOCK_USERS } from './mockUsers';
 
@@ -14,19 +15,26 @@ export type User = {
 };
 
 export default function UserSearchPage() {
+  const router = useRouter();
+
   const [keyword, setKeyword] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const filteredUsers = useMemo(() => {
-    const q = keyword.trim();
-    if (q === '') return [];
-
-    return USERS.filter(
-      (user) => user.name.includes(q) || user.phone.includes(q) || user.crooooberId.includes(q)
-    );
-  }, [keyword]);
+  const [users, setUsers] = useState<User[]>(USERS);
 
   const handleSearch = () => {
+    const q = keyword.trim();
+
+    if (q === '') {
+      setUsers(USERS);
+      return;
+    }
+
+    const filtered = USERS.filter(
+      (user) => user.name.includes(q) || user.phone.includes(q) || user.crooooberId.includes(q)
+    );
+
+    setUsers(filtered);
+    setSelectedId(null);
   };
 
   const handleBack = () => {
@@ -36,9 +44,7 @@ export default function UserSearchPage() {
   const handleDecide = () => {
     if (selectedId === null) return;
 
-    // 次チケットで「ユーザー詳細へ遷移」に差し替え
-    const selectedUser = USERS.find((u) => u.crooooberId === selectedId);
-    console.log('Decide user:', selectedUser);
+    router.push(`/customer/${selectedId}`);
   };
 
   return (
@@ -46,9 +52,9 @@ export default function UserSearchPage() {
       keyword={keyword}
       onChangeKeyword={(v) => {
         setKeyword(v);
-        setSelectedId(null); // 検索条件が変わったら選択はリセット
+        setSelectedId(null);
       }}
-      users={filteredUsers}
+      users={users}
       selectedId={selectedId}
       onSelectUser={setSelectedId}
       onSearch={handleSearch}
