@@ -15,12 +15,18 @@ import HistoryFilters, { FilterState } from "./HistoryFilters";
 import HistoryList from "./HistoryList";
 import Pagination from "./Pagination";
 
-export default function CustomerTopView() {
+type Props = {
+  customerId?: string;
+};
+
+export default function CustomerTopView({ customerId: customerIdProp }: Props) {
+
   const params = useParams();
 
   const raw = (params as any)?.customerId;
-  const customerId =
-    typeof raw === "string" ? raw : raw?.[0] ?? "";
+  const customerIdFromParams =
+  typeof raw === "string" ? raw : raw?.[0] ?? "";
+  const customerId = customerIdProp ?? customerIdFromParams;
 
   const customer = useMemo(() => {
     const id = customerId || "12345678901234";
