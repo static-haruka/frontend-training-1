@@ -96,7 +96,6 @@ export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
     hasMemo: false,
     icon: "link",
   },
-
   {
     id: "p-008",
     date: "2022.10.24",
@@ -254,3 +253,40 @@ export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
     icon: "photo",
   },
 ];
+
+
+export type PurchaseHistoryDetail = {
+  id: string;
+  managementNo: string;
+  productName: string;
+  memoText: string;
+  productUrl: string;
+  installCar: string;
+};
+
+export const MOCK_PURCHASE_DETAILS: Record<string, PurchaseHistoryDetail> = {
+  "p-001": {
+    id: "p-001",
+    managementNo: "MG-000001",
+    productName: "商品名",
+    memoText: "メモ",
+    productUrl: "https://example.com",
+    installCar: "WRX STI",
+  },
+  "p-013": {
+    id: "p-013",
+    managementNo: "MG-000013",
+    productName: "DUMMY ITEM 13",
+    memoText: "メモ付きアイテムの例です。",
+    productUrl: "https://example.com",
+    installCar: "",
+  },
+  "p-020": {
+    id: "p-020",
+    managementNo: "MG-000020",
+    productName: "DUMMY ITEM 20",
+    memoText: "ここもメモ付きの例。",
+    productUrl: "https://example.com",
+    installCar: "",
+  },
+};

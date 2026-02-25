@@ -1,23 +1,33 @@
 "use client";
 
+import Link from "next/link";
 import styled from "styled-components";
 import type { PurchaseHistoryItem } from "./purchaseMocks";
 
 type Props = {
+  customerId: string;
   items: PurchaseHistoryItem[];
 };
 
-export default function PurchaseHistoryList({ items }: Props) {
+export default function PurchaseHistoryList({ customerId, items }: Props) {
   return (
     <List>
       {items.map((it) => (
-        <Row key={it.id}>
+        <Row
+          key={it.id}
+          href={`/customer/${customerId}/purchase/${it.id}`}
+          aria-label={`購入履歴の詳細: ${it.title || "詳細"}`}
+        >
           <Left>
             <IconWrap aria-hidden="true">{renderIcon(it.icon)}</IconWrap>
 
             <Meta>
               <DateText>{it.date} /</DateText>
-              {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
+              {it.carName ? (
+                <CarText>{it.carName}</CarText>
+              ) : (
+                <CarText>&nbsp;</CarText>
+              )}
               {it.statusLabel ? (
                 <Status tone={it.statusTone}>{it.statusLabel}</Status>
               ) : (
@@ -63,7 +73,7 @@ const List = styled.div`
   border-top: 1px solid #e6e6e6;
 `;
 
-const Row = styled.div`
+const Row = styled(Link)`
   display: grid;
   grid-template-columns: 220px 1fr 140px 220px;
   gap: 12px;
@@ -72,6 +82,20 @@ const Row = styled.div`
   height: 78px;
   border-bottom: 1px solid #e6e6e6;
   padding: 0 8px;
+
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: #fafafa;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1f6feb;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
 `;
 
 const Left = styled.div`

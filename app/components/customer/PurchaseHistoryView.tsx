@@ -104,7 +104,7 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
         </RightTools>
       </CountRow>
 
-      <PurchaseHistoryList items={paged} />
+      <PurchaseHistoryList customerId={customerId || "12345678901234"} items={paged} />
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </CustomerPageShell>
