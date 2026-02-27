@@ -1,3 +1,11 @@
+export type PurchaseHistoryComment = {
+  id: string;
+  postedAt: string;
+  authorLabel: string;
+  bodyText: string;
+  resultText: string;
+};
+
 export type PurchaseHistoryItem = {
   id: string;
   date: string;
@@ -9,6 +17,8 @@ export type PurchaseHistoryItem = {
   shopLabel: string;
   hasMemo: boolean;
   icon: "photo" | "gear" | "ring" | "car" | "monitor" | "link";
+
+  comments?: PurchaseHistoryComment[];
 };
 
 export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
@@ -23,6 +33,24 @@ export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
     shopLabel: "Upgarage xx点",
     hasMemo: true,
     icon: "photo",
+
+    comments: [
+      {
+        id: "c-001",
+        postedAt: "2022年11月17日 10:59",
+        authorLabel: "練馬店：後藤高志",
+        bodyText:
+          "お客様より初期不良のお問い合わせがありました。確認したところボルトの劣化による取り付け不良がありました。適切な対応にて納得されて完了しました。お客様より初期不良のお問い合わせがありました。確認したところボルトの劣化による取り付け不良がありました。適切な対応にて納得されて完了しました。",
+        resultText: "",
+      },
+      {
+        id: "c-002",
+        postedAt: "2022年11月17日 10:59",
+        authorLabel: "練馬店：後藤高志",
+        bodyText: "",
+        resultText: "チャットにて対応しました",
+      },
+    ],
   },
   {
     id: "p-002",
@@ -54,7 +82,7 @@ export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
     carName: "",
     statusLabel: "未設定",
     statusTone: "danger",
-    title: "BRAITH BX-418 ｶーﾎﾞﾝｼｮーﾄｱﾝﾃﾅｼﾝｼｭｸ SI",
+    title: "BRAITH BX-418 ｶ-ﾎﾞﾝｼｮ-ﾄｱﾝﾃﾅｼﾝｼｭｸ SI",
     amountYen: 2027,
     shopLabel: "t千葉中央店",
     hasMemo: false,
@@ -253,7 +281,6 @@ export const MOCK_PURCHASE_HISTORY: PurchaseHistoryItem[] = [
     icon: "photo",
   },
 ];
-
 
 export type PurchaseHistoryDetail = {
   id: string;

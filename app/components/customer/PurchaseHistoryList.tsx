@@ -12,44 +12,57 @@ type Props = {
 export default function PurchaseHistoryList({ customerId, items }: Props) {
   return (
     <List>
-      {items.map((it) => (
-        <Row
-          key={it.id}
-          href={`/customer/${customerId}/purchase/${it.id}`}
-          aria-label={`購入履歴の詳細: ${it.title || "詳細"}`}
-        >
-          <Left>
-            <IconWrap aria-hidden="true">{renderIcon(it.icon)}</IconWrap>
+      {items.map((it) => {
+        const hasComment =
+          it.hasMemo || ((it as any).comments?.length ?? 0) > 0;
 
-            <Meta>
-              <DateText>{it.date} /</DateText>
-              {it.carName ? (
-                <CarText>{it.carName}</CarText>
-              ) : (
-                <CarText>&nbsp;</CarText>
-              )}
-              {it.statusLabel ? (
-                <Status tone={it.statusTone}>{it.statusLabel}</Status>
-              ) : (
-                <Status tone="muted">&nbsp;</Status>
-              )}
-            </Meta>
-          </Left>
+        return (
+          <Row
+            key={it.id}
+            href={`/customer/${customerId}/purchase/${it.id}`}
+            aria-label={`購入履歴の詳細: ${it.title || "詳細"}`}
+          >
+            <Left>
+              <IconWrap aria-hidden="true">
+                {renderIcon(it.icon)}
 
-          <TitleArea>
-            <TitleText>{it.title || "\u00A0"}</TitleText>
-          </TitleArea>
+                {hasComment ? (
+                  <CommentBadge aria-label="コメントあり">💬</CommentBadge>
+                ) : null}
+              </IconWrap>
 
-          <AmountArea>
-            <AmountText>¥ {formatYen(it.amountYen)}</AmountText>
-          </AmountArea>
+              <Meta>
+                <DateText>{it.date} /</DateText>
 
-          <Right>
-            <ShopText>{it.shopLabel || "\u00A0"}</ShopText>
-            <Chevron aria-hidden="true">›</Chevron>
-          </Right>
-        </Row>
-      ))}
+                {it.carName ? (
+                  <CarText>{it.carName}</CarText>
+                ) : (
+                  <CarText>&nbsp;</CarText>
+                )}
+
+                {it.statusLabel ? (
+                  <Status tone={it.statusTone}>{it.statusLabel}</Status>
+                ) : (
+                  <Status tone="muted">&nbsp;</Status>
+                )}
+              </Meta>
+            </Left>
+
+            <TitleArea>
+              <TitleText>{it.title || "\u00A0"}</TitleText>
+            </TitleArea>
+
+            <AmountArea>
+              <AmountText>¥ {formatYen(it.amountYen)}</AmountText>
+            </AmountArea>
+
+            <Right>
+              <ShopText>{it.shopLabel || "\u00A0"}</ShopText>
+              <Chevron aria-hidden="true">›</Chevron>
+            </Right>
+          </Row>
+        );
+      })}
     </List>
   );
 }
@@ -106,6 +119,8 @@ const Left = styled.div`
 `;
 
 const IconWrap = styled.div`
+  position: relative; /* ← 追加 */
+
   width: 44px;
   height: 44px;
   display: grid;
@@ -114,6 +129,26 @@ const IconWrap = styled.div`
   border-radius: 8px;
   background: #f4f7ff;
   font-size: 20px;
+`;
+
+const CommentBadge = styled.div`
+  position: absolute;
+  top: -4px;
+  right: -4px;
+
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+
+  background: #f2994a;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+
+  display: grid;
+  place-items: center;
+
+  box-shadow: 0 0 0 2px #fff;
 `;
 
 const Meta = styled.div`
