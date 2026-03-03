@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent } from 'storybook/test'; // ←ここを戻す
+import { within, userEvent } from 'storybook/test';
 import Sidebar from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
@@ -9,7 +9,7 @@ const meta: Meta<typeof Sidebar> = {
     layout: 'fullscreen',
     docs: {
       story: {
-        autoplay: true, // Docsでもplayを走らせたい設定
+        autoplay: true,
       },
     },
   },
