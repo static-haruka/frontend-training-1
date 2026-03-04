@@ -33,12 +33,13 @@ const TABS: {
   { key: "work", label: "作業履歴", emoji: "🛠️", bg: "#dde3f2" },
 ];
 
-// 今実装しているタブだけ
-const ENABLED_TABS: TabKey[] = ["top", "purchase"];
+const ENABLED_TABS: TabKey[] = ["top", "purchase", "reservation"];
 
 function buildHref(key: TabKey, customerId: string) {
   if (key === "top") return `/customer/${customerId}`;
   if (key === "purchase") return `/customer/${customerId}/purchase`;
+  if (key === "reservation") return `/customer/${customerId}/reservation`;
+  
   return "";
 }
 
