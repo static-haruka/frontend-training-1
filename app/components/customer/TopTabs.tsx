@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import { useParams, useRouter } from "next/navigation";
 
 type TabKey =
   | "top"
@@ -32,25 +33,50 @@ const TABS: {
   { key: "work", label: "作業履歴", emoji: "🛠️", bg: "#dde3f2" },
 ];
 
+// 今実装しているタブだけ
+const ENABLED_TABS: TabKey[] = ["top", "purchase"];
+
+function buildHref(key: TabKey, customerId: string) {
+  if (key === "top") return `/customer/${customerId}`;
+  if (key === "purchase") return `/customer/${customerId}/purchase`;
+  return "";
+}
+
 export default function TopTabs({ active }: Props) {
+  const router = useRouter();
+  const params = useParams();
+  const raw = (params as any)?.customerId;
+  const customerId = typeof raw === "string" ? raw : raw?.[0];
+
   return (
     <Bar $cols={TABS.length}>
-      {TABS.map((t) => (
-        <Tab
-          key={t.key}
-          type="button"
-          aria-current={t.key === active ? "page" : undefined}
-          $active={t.key === active}
-          $bg={t.bg}
-          onClick={() => {
-          }}
-        >
-          <TabInner>
-            <Icon aria-hidden="true">{t.emoji}</Icon>
-            <TabLabel>{t.label}</TabLabel>
-          </TabInner>
-        </Tab>
-      ))}
+      {TABS.map((t) => {
+        const isActive = t.key === active;
+        const isEnabled = ENABLED_TABS.includes(t.key);
+
+        return (
+          <Tab
+            key={t.key}
+            type="button"
+            aria-current={isActive ? "page" : undefined}
+            disabled={!isEnabled}
+            $active={isActive}
+            $bg={t.bg}
+            $enabled={isEnabled}
+            onClick={() => {
+              if (!customerId) return;
+              if (!isEnabled) return;
+
+              router.push(buildHref(t.key, customerId));
+            }}
+          >
+            <TabInner>
+              <Icon aria-hidden="true">{t.emoji}</Icon>
+              <TabLabel>{t.label}</TabLabel>
+            </TabInner>
+          </Tab>
+        );
+      })}
     </Bar>
   );
 }
@@ -63,15 +89,18 @@ const Bar = styled.div<{ $cols: number }>`
   border-bottom: 1px solid #e6e6e6;
 `;
 
-const Tab = styled.button<{ $active: boolean; $bg: string }>`
+const Tab = styled.button<{
+  $active: boolean;
+  $bg: string;
+  $enabled: boolean;
+}>`
   appearance: none;
   border: none;
   background: ${(p) => p.$bg};
-  cursor: pointer;
+  cursor: ${(p) => (p.$enabled ? "pointer" : "default")};
 
   height: 64px;
   padding: 6px 8px;
-
   position: relative;
 
   ${(p) =>
@@ -81,8 +110,14 @@ const Tab = styled.button<{ $active: boolean; $bg: string }>`
       font-weight: 700;
     `}
 
+  ${(p) =>
+    !p.$enabled &&
+    `
+      opacity: 0.5;
+    `}
+
   &:hover {
-    filter: brightness(0.98);
+    filter: ${(p) => (p.$enabled ? "brightness(0.98)" : "none")};
   }
 `;
 

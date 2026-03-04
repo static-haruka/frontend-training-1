@@ -9,8 +9,7 @@ import {
   Transaction,
   TransactionKind,
 } from "./mocks";
-import TopTabs from "./TopTabs";
-import CustomerSidePanel from "./CustomerSidePanel";
+import CustomerPageShell from "./CustomerPageShell";
 import HistoryFilters, { FilterState } from "./HistoryFilters";
 import HistoryList from "./HistoryList";
 import Pagination from "./Pagination";
@@ -20,12 +19,10 @@ type Props = {
 };
 
 export default function CustomerTopView({ customerId: customerIdProp }: Props) {
-
   const params = useParams();
 
   const raw = (params as any)?.customerId;
-  const customerIdFromParams =
-  typeof raw === "string" ? raw : raw?.[0] ?? "";
+  const customerIdFromParams = typeof raw === "string" ? raw : raw?.[0] ?? "";
   const customerId = customerIdProp ?? customerIdFromParams;
 
   const customer = useMemo(() => {
@@ -49,13 +46,9 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
   const filtered = useMemo(() => {
     const list = transactions.slice();
 
-    const byCar = filters.carId
-      ? list.filter((t) => t.carId === filters.carId)
-      : list;
+    const byCar = filters.carId ? list.filter((t) => t.carId === filters.carId) : list;
 
-    const byComment = filters.hasCommentOnly
-      ? byCar.filter((t) => t.hasComment)
-      : byCar;
+    const byComment = filters.hasCommentOnly ? byCar.filter((t) => t.hasComment) : byCar;
 
     const byKeyword = filters.keyword.trim()
       ? byComment.filter((t) => containsKeyword(t, filters.keyword, customer))
@@ -79,51 +72,35 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
   };
 
   return (
-    <Layout>
-      <CustomerSidePanel customer={customer} />
+    <CustomerPageShell customer={customer} active="top">
+      <PageTitle>取引履歴</PageTitle>
+      <Divider />
 
-      <Main>
-        <TopTabs active="top" />
+      <HistoryFilters cars={customer.cars} value={filters} onChange={handleChangeFilters} />
 
-        <MainInner>
-          <PageTitle>取引履歴</PageTitle>
-          <Divider />
+      <CountRow>
+        <CountText>{filtered.length}件</CountText>
+        <RightTools>
+          <CommentOnly>
+            <input
+              type="checkbox"
+              checked={filters.hasCommentOnly}
+              onChange={(e) =>
+                handleChangeFilters({
+                  ...filters,
+                  hasCommentOnly: e.target.checked,
+                })
+              }
+            />
+            <span>メモ付きのみ</span>
+          </CommentOnly>
+        </RightTools>
+      </CountRow>
 
-          <HistoryFilters
-            cars={customer.cars}
-            value={filters}
-            onChange={handleChangeFilters}
-          />
+      <HistoryList items={paged} cars={customer.cars} />
 
-          <CountRow>
-            <CountText>{filtered.length}件</CountText>
-            <RightTools>
-              <CommentOnly>
-                <input
-                  type="checkbox"
-                  checked={filters.hasCommentOnly}
-                  onChange={(e) =>
-                    handleChangeFilters({
-                      ...filters,
-                      hasCommentOnly: e.target.checked,
-                    })
-                  }
-                />
-                <span>メモ付きのみ</span>
-              </CommentOnly>
-            </RightTools>
-          </CountRow>
-
-          <HistoryList items={paged} cars={customer.cars} />
-
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            onChange={setPage}
-          />
-        </MainInner>
-      </Main>
-    </Layout>
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+    </CustomerPageShell>
   );
 }
 
@@ -140,9 +117,7 @@ export function containsKeyword(
   if (!k) return true;
 
   const car = customer.cars.find((c) => c.id === t.carId);
-  const carText = car
-    ? [car.maker, car.model, car.nickname ?? ""].join(" ")
-    : "";
+  const carText = car ? [car.maker, car.model, car.nickname ?? ""].join(" ") : "";
 
   const hay = [
     t.title,
@@ -158,19 +133,11 @@ export function containsKeyword(
   return hay.includes(k);
 }
 
-export function filterByPeriod(
-  list: Transaction[],
-  from: string,
-  to: string
-) {
+export function filterByPeriod(list: Transaction[], from: string, to: string) {
   if (!from && !to) return list;
 
-  const fromAt = from
-    ? new Date(from + "T00:00:00Z").getTime()
-    : null;
-  const toAt = to
-    ? new Date(to + "T23:59:59Z").getTime()
-    : null;
+  const fromAt = from ? new Date(from + "T00:00:00Z").getTime() : null;
+  const toAt = to ? new Date(to + "T23:59:59Z").getTime() : null;
 
   return list.filter((t) => {
     const ts = new Date(t.sortAt).getTime();
@@ -189,21 +156,6 @@ export function kindLabel(kind: TransactionKind) {
 
 /* ---------- styles ---------- */
 
-const Layout = styled.div`
-  display: flex;
-  min-height: 100%;
-`;
-
-const Main = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
-
-const MainInner = styled.div`
-  padding: 24px 24px 16px;
-`;
-
 const PageTitle = styled.h1`
   margin: 8px 0 12px;
   font-size: 18px;
@@ -221,7 +173,7 @@ const CountRow = styled.div`
   align-items: center;
 
   height: 44px;
-  padding: 0; 
+  padding: 0;
 `;
 
 const CountText = styled.div`
@@ -250,4 +202,3 @@ const CommentOnly = styled.label`
     height: 14px;
   }
 `;
-

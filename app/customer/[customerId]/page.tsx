@@ -1,10 +1,10 @@
 import CustomerTopView from "@/app/components/customer/CustomerTopView";
 
 type PageProps = {
-  params: { customerId: string };
+  params: Promise<{ customerId: string }>;
 };
 
-export default function CustomerPage({ params }: PageProps) {
-  const { customerId } = params;
+export default async function CustomerPage({ params }: PageProps) {
+  const { customerId } = await params;
   return <CustomerTopView customerId={customerId} />;
 }

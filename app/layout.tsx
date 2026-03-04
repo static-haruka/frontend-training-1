@@ -71,7 +71,7 @@ const Main = styled.div`
 `;
 
 const Header = styled.header`
-  height: 56px;
+  padding: 16px;
   background:  #F7F7F7;
   display: flex;
   align-items: center;
