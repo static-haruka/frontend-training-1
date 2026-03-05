@@ -58,6 +58,9 @@ describe("TopTabs", () => {
 
     await user.click(screen.getByRole("button", { name: "トップ" }));
     expect(pushMock).toHaveBeenCalledWith("/customer/CUST-1");
+
+    await user.click(screen.getByRole("button", { name: "作業予約" }));
+    expect(pushMock).toHaveBeenCalledWith("/customer/CUST-1/reservation");
   });
 
   it("customerId が配列で渡された場合、最初の要素が使用される", async () => {
@@ -78,7 +81,6 @@ describe("TopTabs", () => {
     expect(pushMock).not.toHaveBeenCalled();
   });
 
-
   it("無効なタブ(isEnabled=false)の onClick 内部の早期リターンを網羅する", () => {
     render(<TopTabs active="top" />);
     const messageTab = screen.getByRole("button", { name: "メッセージ" });
@@ -94,7 +96,7 @@ describe("TopTabs", () => {
   it("内部関数 buildHref のフォールバック (return '') を網羅する", () => {
     const originalIncludes = Array.prototype.includes;
     jest.spyOn(Array.prototype, "includes").mockImplementation(function (this: any, searchElement: any) {
-      if (Array.isArray(this) && this.join(",") === "top,purchase") {
+      if (Array.isArray(this) && this.join(",") === "top,purchase,reservation") {
         return true; 
       }
       return originalIncludes.call(this, searchElement);
