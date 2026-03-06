@@ -5,11 +5,12 @@ import type { Reservation } from "./ReservationView";
 
 type Props = {
   reservation: Reservation;
+  isPast: boolean;
 };
 
-export default function ReservationItem({ reservation }: Props) {
+export default function ReservationItem({ reservation, isPast }: Props) {
   return (
-    <Card>
+    <Card $isPast={isPast}>
       <CardHeader>
         <DateIcon>📅</DateIcon>
         <DateText>{reservation.datetime}</DateText>
@@ -38,14 +39,10 @@ export default function ReservationItem({ reservation }: Props) {
 
 /* ---------- styles ---------- */
 
-const Card = styled.div`
+const Card = styled.div<{ $isPast: boolean }>`
   padding: 16px 24px;
   border-bottom: 1px solid #eee;
-  background-color: #fcfcfc;
-  
-  &:nth-child(even) {
-    background-color: #f5f5f5;
-  }
+  background-color: ${props => props.$isPast ? "#f5f5f5" : "#fcfcfc"};
 `;
 
 const CardHeader = styled.div`

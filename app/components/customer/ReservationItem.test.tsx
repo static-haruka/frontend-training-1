@@ -1,79 +1,32 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import ReservationView from "./ReservationView";
-import type { Customer } from "./mocks";
+import ReservationItem from "./ReservationItem";
+import type { Reservation } from "./ReservationView";
 
-// --- モックデータ ---
-const mockCustomer: Customer = {
-  id: "c-123",
-  crooooberId: "1234567890",
-  name: "山田 太郎",
-  cars: [
-    {
-      id: "car-1",
-      maker: "NISSAN",
-      model: "R35",
-    },
-  ],
+const mockReservation: Reservation = {
+  id: "test-1",
+  datetime: "2023年03月06日 12:30",
+  task: "買取予約",
+  storeName: "t 横浜町田総本店",
+  storeUrl: "/dummy-url",
 };
 
-// 子コンポーネントのモック化
-jest.mock("./HistoryFilters", () => {
-  return function MockHistoryFilters() {
-    return <div data-testid="mock-history-filters" />;
-  };
-});
+describe("ReservationItem", () => {
+  it("渡された予約情報が正しくレンダリングされること（通常表示）", () => {
+    render(<ReservationItem reservation={mockReservation} isPast={false} />);
 
-jest.mock("./Pagination", () => {
-  return function MockPagination() {
-    return <div data-testid="mock-pagination" />;
-  };
-});
+    expect(screen.getByText("2023年03月06日 12:30")).toBeInTheDocument();
+    expect(screen.getByText("買取予約")).toBeInTheDocument();
+    expect(screen.getByText("t 横浜町田総本店")).toBeInTheDocument();
 
-jest.mock("./ReservationItem", () => {
-  return function MockReservationItem({ reservation }: any) {
-    return <div data-testid="mock-reservation-item">{reservation.task}</div>;
-  };
-});
+    const storeLink = screen.getByRole("link", { name: "t 横浜町田総本店" });
+    expect(storeLink).toHaveAttribute("href", "/dummy-url");
 
-describe("ReservationView", () => {
-  it("初期表示で必要な要素が正しくレンダリングされていること", () => {
-    render(<ReservationView customer={mockCustomer} />);
-
-    expect(screen.getByRole("heading", { name: "予約一覧" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "買取予約" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "UPPIT(持込取付予約)" })).toBeInTheDocument();
-    expect(screen.getByText("20件")).toBeInTheDocument();
-
-    expect(screen.getByTestId("mock-history-filters")).toBeInTheDocument();
-    expect(screen.getByTestId("mock-pagination")).toBeInTheDocument();
-
-    const items = screen.getAllByTestId("mock-reservation-item");
-    expect(items).toHaveLength(4);
+    expect(screen.getByRole("button", { name: "予約詳細" })).toBeInTheDocument();
   });
 
-  it("「メモ付きのみ」のチェックボックスのON/OFFが切り替わること", async () => {
-    const user = userEvent.setup();
-    render(<ReservationView customer={mockCustomer} />);
-
-    const checkbox = screen.getByLabelText("メモ付きのみ");
+  it("過去の予約（isPast=true）としてレンダリングしてもクラッシュしないこと", () => {
+    render(<ReservationItem reservation={mockReservation} isPast={true} />);
     
-    expect(checkbox).not.toBeChecked();
-
-    await user.click(checkbox);
-    expect(checkbox).toBeChecked();
-
-    await user.click(checkbox);
-    expect(checkbox).not.toBeChecked();
-  });
-
-  it("各セクションのタブ（本日以降/過去）がクリックできること", async () => {
-    const user = userEvent.setup();
-    render(<ReservationView customer={mockCustomer} />);
-
-    const allButtons = screen.getAllByRole("button", { name: "過去の予約も含む" });
-    
-    await user.click(allButtons[0]);
-    await user.click(allButtons[1]);
+    expect(screen.getByText("2023年03月06日 12:30")).toBeInTheDocument();
   });
 });

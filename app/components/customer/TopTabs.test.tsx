@@ -35,7 +35,7 @@ describe("TopTabs", () => {
     expect(screen.getByRole("button", { name: "購入履歴" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "査定中" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "買取履歴" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "作業予約" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "予約一覧" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "作業履歴" })).toBeInTheDocument();
   });
 
@@ -59,7 +59,7 @@ describe("TopTabs", () => {
     await user.click(screen.getByRole("button", { name: "トップ" }));
     expect(pushMock).toHaveBeenCalledWith("/customer/CUST-1");
 
-    await user.click(screen.getByRole("button", { name: "作業予約" }));
+    await user.click(screen.getByRole("button", { name: "予約一覧" }));
     expect(pushMock).toHaveBeenCalledWith("/customer/CUST-1/reservation");
   });
 
