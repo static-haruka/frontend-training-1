@@ -29,10 +29,7 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
         ))}
       </Pages>
 
-      <PagerButton
-        disabled={page >= totalPages}
-        onClick={() => onChange(page + 1)}
-      >
+      <PagerButton disabled={page >= totalPages} onClick={() => onChange(page + 1)}>
         次へ
       </PagerButton>
     </Wrap>
@@ -55,14 +52,23 @@ const Wrap = styled.div`
   align-items: center;
   gap: 10px;
   padding: 14px 0;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
 `;
 
 const Pages = styled.div`
   display: flex;
   gap: 8px;
-
   max-width: 420px;
-  overflow: hidden;
+  overflow-x: auto;
+  padding-bottom: 2px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const PageButton = styled.button`
@@ -72,9 +78,9 @@ const PageButton = styled.button`
   border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
-
   font-size: 12px;
   color: #333;
+  flex: 0 0 auto;
 
   &:hover {
     background: #f6f6f6;
@@ -102,9 +108,9 @@ const PagerButton = styled.button`
   border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
-
   font-size: 12px;
   color: #333;
+  flex: 0 0 auto;
 
   &:hover:not(:disabled) {
     background: #f6f6f6;

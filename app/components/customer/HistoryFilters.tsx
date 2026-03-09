@@ -72,17 +72,22 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
   );
 }
 
-/* ---------- styles ---------- */
-
 const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-
-  min-width: 980px;
-
-  height: 56px;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 12px;
   border-bottom: 1px solid #e6e6e6;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    gap: 12px;
+  }
 `;
 
 const SearchArea = styled.div`
@@ -90,11 +95,22 @@ const SearchArea = styled.div`
   align-items: center;
   gap: 10px;
   flex: 1;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
   width: 320px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex: 1;
+  }
 `;
 
 const SearchIcon = styled.div`
@@ -119,6 +135,7 @@ const SearchInput = styled.input`
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   outline: none;
+  box-sizing: border-box;
 `;
 
 const SearchButton = styled.button`
@@ -130,7 +147,6 @@ const SearchButton = styled.button`
   color: #fff;
   font-weight: 800;
   cursor: pointer;
-
   white-space: nowrap;
   flex-shrink: 0;
 
@@ -141,18 +157,34 @@ const SearchButton = styled.button`
   &:active {
     transform: translateY(1px);
   }
+
+  @media (max-width: 768px) {
+    padding: 0 14px;
+  }
 `;
 
 const RightArea = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Period = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const DateInput = styled.input`
@@ -161,15 +193,23 @@ const DateInput = styled.input`
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+  min-width: 0;
+  box-sizing: border-box;
 
   &:not(:focus):invalid {
-  color: transparent;
+    color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    flex: 1;
+    width: 100%;
   }
 `;
 
 const Tilde = styled.span`
   color: #666;
   font-size: 12px;
+  flex-shrink: 0;
 `;
 
 const RegisteredCarSelect = styled.select`
@@ -178,4 +218,10 @@ const RegisteredCarSelect = styled.select`
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+  min-width: 0;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;

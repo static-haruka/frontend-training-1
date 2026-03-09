@@ -49,44 +49,56 @@ export default function TopTabs({ active }: Props) {
   const customerId = typeof raw === "string" ? raw : raw?.[0];
 
   return (
-    <Bar $cols={TABS.length}>
-      {TABS.map((t) => {
-        const isActive = t.key === active;
-        const isEnabled = ENABLED_TABS.includes(t.key);
+    <TabsScroller>
+      <Bar $cols={TABS.length}>
+        {TABS.map((t) => {
+          const isActive = t.key === active;
+          const isEnabled = ENABLED_TABS.includes(t.key);
 
-        return (
-          <Tab
-            key={t.key}
-            type="button"
-            aria-current={isActive ? "page" : undefined}
-            disabled={!isEnabled}
-            $active={isActive}
-            $bg={t.bg}
-            $enabled={isEnabled}
-            onClick={() => {
-              if (!customerId) return;
-              if (!isEnabled) return;
-
-              router.push(buildHref(t.key, customerId));
-            }}
-          >
-            <TabInner>
-              <Icon aria-hidden="true">{t.emoji}</Icon>
-              <TabLabel>{t.label}</TabLabel>
-            </TabInner>
-          </Tab>
-        );
-      })}
-    </Bar>
+          return (
+            <Tab
+              key={t.key}
+              type="button"
+              aria-current={isActive ? "page" : undefined}
+              disabled={!isEnabled}
+              $active={isActive}
+              $bg={t.bg}
+              $enabled={isEnabled}
+              onClick={() => {
+                if (!customerId) return;
+                if (!isEnabled) return;
+                router.push(buildHref(t.key, customerId));
+              }}
+            >
+              <TabInner>
+                <Icon aria-hidden="true">{t.emoji}</Icon>
+                <TabLabel>{t.label}</TabLabel>
+              </TabInner>
+            </Tab>
+          );
+        })}
+      </Bar>
+    </TabsScroller>
   );
 }
 
 /* ---------- styles ---------- */
 
+const TabsScroller = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+`;
+
 const Bar = styled.div<{ $cols: number }>`
   display: grid;
   grid-template-columns: repeat(${(p) => p.$cols}, 1fr);
   border-bottom: 1px solid #e6e6e6;
+  min-width: 720px;
+
+  @media (max-width: 768px) {
+    min-width: 640px;
+  }
 `;
 
 const Tab = styled.button<{
@@ -102,6 +114,7 @@ const Tab = styled.button<{
   height: 64px;
   padding: 6px 8px;
   position: relative;
+  min-width: 0;
 
   ${(p) =>
     p.$active &&
@@ -118,6 +131,11 @@ const Tab = styled.button<{
 
   &:hover {
     filter: ${(p) => (p.$enabled ? "brightness(0.98)" : "none")};
+  }
+
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 6px 4px;
   }
 `;
 
@@ -136,5 +154,11 @@ const Icon = styled.span`
 const TabLabel = styled.div`
   font-size: 12px;
   color: #222;
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
+  word-break: keep-all;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
 `;

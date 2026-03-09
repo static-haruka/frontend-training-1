@@ -214,17 +214,30 @@ const DividerLarge = styled.div`
   margin: 28px 0 16px;
 `;
 
+const DividerSmall = styled.div`
+  height: 1px;
+  background: #ddd;
+  margin: 12px 0;
+`;
+
 const SummaryRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding-top: 8px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const SummaryLeft = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
+  min-width: 0;
 `;
 
 const Thumb = styled.div`
@@ -234,17 +247,20 @@ const Thumb = styled.div`
   place-items: center;
   border-radius: 8px;
   background: #f4f7ff;
+  flex-shrink: 0;
 `;
 
 const SummaryMeta = styled.div`
   display: grid;
   gap: 4px;
+  min-width: 0;
 `;
 
 const TopLine = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 4px;
   font-size: 12px;
   color: #777;
 `;
@@ -262,26 +278,34 @@ const ManageText = styled.span`
 `;
 
 const Dot = styled.span`
-  color: transparent;
+  color: #bbb;
 `;
 
 const ProductRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 6px 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const ProductName = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: #222;
+  word-break: break-word;
 `;
 
 const ProductPrice = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: #1f6feb;
+  flex-shrink: 0;
 `;
 
 const Table = styled.div`
@@ -293,6 +317,12 @@ const Tr = styled.div`
   grid-template-columns: 180px 1fr;
   padding: 12px 0;
   border-bottom: 1px solid #ddd;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
 `;
 
 const Th = styled.div`
@@ -303,6 +333,8 @@ const Th = styled.div`
 const Td = styled.div`
   font-size: 12px;
   color: #222;
+  min-width: 0;
+  word-break: break-word;
 `;
 
 const MemoBox = styled.div`
@@ -310,6 +342,7 @@ const MemoBox = styled.div`
   padding: 10px;
   border-radius: 6px;
   white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const Url = styled.a`
@@ -355,143 +388,144 @@ const ActionDanger = styled.button`
   }
 `;
 
-/* ---- comments ---- */
-
-const CommentSection = styled.div``;
+const CommentSection = styled.section`
+  min-width: 0;
+`;
 
 const CommentHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const CommentTitle = styled.h2`
+  margin: 0;
   font-size: 16px;
   font-weight: 700;
 `;
 
 const CommentFilters = styled.div`
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 8px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `;
 
-const FilterLabel = styled.div`
+const FilterLabel = styled.span`
   font-size: 12px;
-  color: #777;
+  color: #666;
 `;
 
 const FilterSelect = styled.select`
-  height: 34px;
+  height: 32px;
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 0 10px;
-`;
+  min-width: 0;
 
-const DividerSmall = styled.div`
-  height: 1px;
-  background: #ddd;
-  margin: 12px 0;
+  @media (max-width: 768px) {
+    flex: 1;
+  }
 `;
 
 const AddCommentBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 
-  background: #f2f2f2;
-  border-radius: 10px;
-  padding: 14px 16px;
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 `;
 
 const AddIcon = styled.div`
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  font-size: 20px;
+  flex-shrink: 0;
 `;
 
 const AddCommentText = styled.div`
+  min-width: 0;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 `;
 
 const AddMain = styled.div`
   font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
 `;
 
 const AddSub = styled.div`
   font-size: 12px;
-  color: #777;
-  margin-top: 4px;
+  color: #666;
+  margin-top: 2px;
 `;
 
 const SendButtonSmall = styled.button`
-  background: #1f6feb;
-  color: #fff;
-  border: none;
+  height: 32px;
+  padding: 0 12px;
   border-radius: 6px;
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 600;
+  border: 1px solid #2f80ed;
+  background: #2f80ed;
+  color: #fff;
   cursor: pointer;
-
-  &:hover {
-    background: #1558c0;
-  }
+  flex-shrink: 0;
 `;
 
 const CommentList = styled.div`
-  margin-top: 20px;
-`;
-
-const EmptyText = styled.div`
-  font-size: 12px;
-  color: #777;
-  padding: 16px 0;
+  display: grid;
+  gap: 12px;
 `;
 
 const CommentItem = styled.div`
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
 `;
 
 const CommentIcon = styled.div`
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  background: orange;
-  color: white;
-  border-radius: 6px;
+  flex-shrink: 0;
 `;
 
 const CommentBody = styled.div`
+  min-width: 0;
   flex: 1;
 `;
 
 const CommentMeta = styled.div`
   font-size: 12px;
-  color: #777;
+  color: #666;
   margin-bottom: 6px;
 `;
 
 const CommentText = styled.div`
   font-size: 13px;
-  line-height: 1.6;
+  color: #222;
   white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const CommentResult = styled.div`
   margin-top: 6px;
   font-size: 13px;
-  color: #555;
+  color: #222;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
+
+const EmptyText = styled.div`
+  color: #666;
+  font-size: 13px;
+  padding: 8px 0;
 `;

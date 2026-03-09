@@ -55,13 +55,19 @@ export default function CustomerSidePanel({ customer }: Props) {
   );
 }
 
-/* ---------- styles ---------- */
-
 const Wrap = styled.aside`
   width: 268px;
   min-width: 268px;
   border-right: 1px solid #e9e9e9;
   background: #fff;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid #e9e9e9;
+  }
 `;
 
 const CustomerBox = styled.div`
@@ -81,6 +87,7 @@ const CrooooberIdValue = styled.div`
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  word-break: break-word;
 `;
 
 const NameRow = styled.div`
@@ -89,6 +96,7 @@ const NameRow = styled.div`
   justify-content: center;
   gap: 6px;
   margin: 10px 0 8px;
+  flex-wrap: wrap;
 `;
 
 const Name = styled.div`
@@ -136,6 +144,7 @@ const CarCard = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  min-width: 0;
 `;
 
 const CarThumb = styled.div`
@@ -164,6 +173,7 @@ const CarThumb = styled.div`
 
 const CarText = styled.div`
   min-width: 0;
+  flex: 1;
 `;
 
 const CarMaker = styled.div`
@@ -188,6 +198,7 @@ const CarNote = styled.div`
   font-size: 11px;
   color: #1b6bd1;
   font-weight: 600;
+  word-break: break-word;
 `;
 
 const Buttons = styled.div`
@@ -205,6 +216,7 @@ const ActionButton = styled.button`
   color: #1b6bd1;
   font-weight: 800;
   cursor: pointer;
+  width: 100%;
 
   &:hover {
     background: #f3f8ff;

@@ -13,8 +13,7 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
   return (
     <List>
       {items.map((it) => {
-        const hasComment =
-          it.hasMemo || ((it as any).comments?.length ?? 0) > 0;
+        const hasComment = it.hasMemo || ((it as any).comments?.length ?? 0) > 0;
 
         return (
           <Row
@@ -25,21 +24,12 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
             <Left>
               <IconWrap aria-hidden="true">
                 {renderIcon(it.icon)}
-
-                {hasComment ? (
-                  <CommentBadge aria-label="コメントあり">💬</CommentBadge>
-                ) : null}
+                {hasComment ? <CommentBadge aria-label="コメントあり">💬</CommentBadge> : null}
               </IconWrap>
 
               <Meta>
-                <DateText>{it.date} /</DateText>
-
-                {it.carName ? (
-                  <CarText>{it.carName}</CarText>
-                ) : (
-                  <CarText>&nbsp;</CarText>
-                )}
-
+                <DateText>{it.date}</DateText>
+                {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
                 {it.statusLabel ? (
                   <Status tone={it.statusTone}>{it.statusLabel}</Status>
                 ) : (
@@ -92,9 +82,9 @@ const Row = styled(Link)`
   gap: 12px;
   align-items: center;
 
-  height: 78px;
+  min-height: 78px;
   border-bottom: 1px solid #e6e6e6;
-  padding: 0 8px;
+  padding: 10px 8px;
 
   text-decoration: none;
   color: inherit;
@@ -109,6 +99,12 @@ const Row = styled(Link)`
     outline-offset: 2px;
     border-radius: 6px;
   }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px 8px;
+  }
 `;
 
 const Left = styled.div`
@@ -119,35 +115,30 @@ const Left = styled.div`
 `;
 
 const IconWrap = styled.div`
-  position: relative; /* ← 追加 */
-
+  position: relative;
   width: 44px;
   height: 44px;
   display: grid;
   place-items: center;
-
   border-radius: 8px;
   background: #f4f7ff;
   font-size: 20px;
+  flex-shrink: 0;
 `;
 
 const CommentBadge = styled.div`
   position: absolute;
   top: -4px;
   right: -4px;
-
   width: 18px;
   height: 18px;
   border-radius: 6px;
-
   background: #f2994a;
   color: #fff;
   font-size: 12px;
   line-height: 1;
-
   display: grid;
   place-items: center;
-
   box-shadow: 0 0 0 2px #fff;
 `;
 
@@ -165,6 +156,7 @@ const DateText = styled.div`
 const CarText = styled.div`
   font-size: 11px;
   color: #777;
+  word-break: break-word;
 `;
 
 const Status = styled.div<{ tone: "danger" | "muted" }>`
@@ -180,10 +172,14 @@ const TitleText = styled.div`
   font-size: 13px;
   font-weight: 600;
   color: #222;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    white-space: normal;
+    word-break: break-word;
+  }
 `;
 
 const AmountArea = styled.div`
@@ -202,18 +198,28 @@ const Right = styled.div`
   justify-content: flex-end;
   gap: 10px;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const ShopText = styled.div`
-  font-size: 11px;
-  color: #999;
+  font-size: 12px;
+  color: #666;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    white-space: normal;
+    word-break: break-word;
+  }
 `;
 
 const Chevron = styled.div`
-  color: #999;
   font-size: 20px;
-  line-height: 1;
+  color: #999;
+  flex-shrink: 0;
 `;

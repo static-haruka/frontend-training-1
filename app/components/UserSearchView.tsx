@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import type { User } from '@/app/user_search/page';
+import styled from "styled-components";
+import type { User } from "@/app/user_search/page";
 
 type Props = {
   keyword: string;
@@ -24,7 +24,6 @@ export default function UserSearchView({
   onBack,
   onDecide,
 }: Props) {
-
   const showTable = true;
 
   return (
@@ -51,43 +50,45 @@ export default function UserSearchView({
 
         {showTable && (
           <>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Croooober ID</th>
-                  <th>氏名</th>
-                  <th>電話番号</th>
-                  <th>住所</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.length === 0 ? (
-                  <NoResultRow>
-                    <td colSpan={4}>該当する顧客がいません</td>
-                  </NoResultRow>
-                ) : (
-                  users.map((user) => {
-                    const isSelected = selectedId === user.crooooberId;
+            <TableScroller>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Croooober ID</th>
+                    <th>氏名</th>
+                    <th>電話番号</th>
+                    <th>住所</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.length === 0 ? (
+                    <NoResultRow>
+                      <td colSpan={4}>該当する顧客がいません</td>
+                    </NoResultRow>
+                  ) : (
+                    users.map((user) => {
+                      const isSelected = selectedId === user.crooooberId;
 
-                    return (
-                      <TableRow
-                        key={user.crooooberId}
-                        $selected={isSelected}
-                        onClick={() => onSelectUser(user.crooooberId)}
-                        role="button"
-                        tabIndex={0}
-                        aria-selected={isSelected}
-                      >
-                        <td>{user.crooooberId}</td>
-                        <td>{user.name}</td>
-                        <td>{user.phone}</td>
-                        <td>{user.address}</td>
-                      </TableRow>
-                    );
-                  })
-                )}
-              </tbody>
-            </Table>
+                      return (
+                        <TableRow
+                          key={user.crooooberId}
+                          $selected={isSelected}
+                          onClick={() => onSelectUser(user.crooooberId)}
+                          role="button"
+                          tabIndex={0}
+                          aria-selected={isSelected}
+                        >
+                          <td>{user.crooooberId}</td>
+                          <td>{user.name}</td>
+                          <td>{user.phone}</td>
+                          <td>{user.address}</td>
+                        </TableRow>
+                      );
+                    })
+                  )}
+                </tbody>
+              </Table>
+            </TableScroller>
 
             <ButtonRow>
               <BackButton type="button" onClick={onBack}>
@@ -108,30 +109,49 @@ export default function UserSearchView({
 /* ---------- styles ---------- */
 
 const Page = styled.div`
-  height: 100%;
+  min-height: 100%;
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 const Card = styled.section`
   margin: 0 auto;
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
 `;
 
 const SearchRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 35px;
+  gap: 20px;
   margin-bottom: 32px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
 `;
 
 const Title = styled.div`
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
   flex: 0 0 360px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    flex: 1 1 auto;
+    width: 100%;
+  }
 `;
 
 const SearchIcon = styled.div`
@@ -143,6 +163,7 @@ const SearchIcon = styled.div`
 
   img {
     width: 15px;
+    display: block;
   }
 `;
 
@@ -153,10 +174,13 @@ const SearchInput = styled.input`
   background: #f7f7f7;
   padding: 0 12px 0 34px;
   font-size: 12px;
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
 
   &:focus {
     border-color: #93c5fd;
     background: #ffffff;
+    outline: none;
   }
 `;
 
@@ -168,15 +192,27 @@ const SearchButton = styled.button`
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
+  border: 1px solid #0075af;
+  white-space: nowrap;
 
   &:hover {
     opacity: 0.92;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const TableScroller = styled.div`
+  width: 100%;
+  overflow-x: auto;
 `;
 
 const Table = styled.table`
   margin-top: 24px;
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
 
   th,
@@ -184,18 +220,18 @@ const Table = styled.table`
     border-bottom: 1px solid #e5e7eb;
     padding: 14px 20px;
     font-size: 14px;
+    text-align: left;
   }
 
   th {
     background: #eaf3fb;
-    text-align: left;
     font-weight: 600;
     padding: 10px 28px;
   }
 `;
 
 const TableRow = styled.tr<{ $selected: boolean }>`
-  background: ${(p) => (p.$selected ? '#f3f4f6' : 'transparent')};
+  background: ${(p) => (p.$selected ? "#f3f4f6" : "transparent")};
 
   &:hover {
     background: #f3f4f6;
@@ -210,11 +246,15 @@ const NoResultRow = styled.tr`
 `;
 
 const ButtonRow = styled.div`
-  margin-top: 22px;
   display: flex;
   justify-content: center;
   gap: 22px;
   margin-top: 40px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 const BackButton = styled.button`
@@ -223,10 +263,16 @@ const BackButton = styled.button`
   border-radius: 8px;
   border: 1px solid #0075af;
   color: #0075af;
+  background: #fff;
   font-weight: 600;
 
   &:hover {
     opacity: 0.92;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 0;
   }
 `;
 
@@ -246,5 +292,10 @@ const DecideButton = styled.button`
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: 0;
   }
 `;
