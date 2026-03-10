@@ -26,13 +26,19 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
   const customerId = customerIdProp ?? customerIdFromParams;
 
   const customer = useMemo(() => {
-    const id = customerId || "12345678901234";
-    return fetchCustomer(id);
+    if (!customerId) {
+      return undefined;
+    }
+
+    return fetchCustomer(customerId);
   }, [customerId]);
 
   const transactions = useMemo(() => {
-    const id = customerId || "12345678901234";
-    return fetchTransactions(id);
+    if (!customerId) {
+      return [];
+    }
+
+    return fetchTransactions(customerId);
   }, [customerId]);
 
   const [filters, setFilters] = useState<FilterState>({
@@ -44,6 +50,10 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
   });
 
   const filtered = useMemo(() => {
+    if (!customer) {
+      return [];
+    }
+
     const list = transactions.slice();
 
     const byCar = filters.carId ? list.filter((t) => t.carId === filters.carId) : list;
@@ -70,6 +80,10 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
     setFilters(next);
     setPage(1);
   };
+
+  if (!customer) {
+    return <div>顧客情報が見つかりません</div>;
+  }
 
   return (
     <CustomerPageShell customer={customer} active="top">
@@ -103,8 +117,6 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
     </CustomerPageShell>
   );
 }
-
-/* helper functions */
 
 export function containsKeyword(
   t: Transaction,
@@ -147,14 +159,11 @@ export function filterByPeriod(list: Transaction[], from: string, to: string) {
   });
 }
 
-// 検索用（containsKeyword用）
 export function kindLabel(kind: TransactionKind) {
   if (kind === "purchase") return "購入履歴";
   if (kind === "assessment") return "査定履歴";
   return "";
 }
-
-/* ---------- styles ---------- */
 
 const PageTitle = styled.h1`
   margin: 8px 0 12px;
@@ -171,7 +180,6 @@ const Divider = styled.div`
 const CountRow = styled.div`
   display: flex;
   align-items: center;
-
   height: 44px;
   padding: 0;
 `;
@@ -179,7 +187,6 @@ const CountRow = styled.div`
 const CountText = styled.div`
   font-size: 12px;
   color: #666;
-
   line-height: 1;
 `;
 

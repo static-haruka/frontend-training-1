@@ -1,34 +1,36 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ReservationItem from "./ReservationItem";
 
-const meta = {
-  title: "customer/ReservationItem",
+const meta: Meta<typeof ReservationItem> = {
+  title: "Customer/ReservationItem",
   component: ReservationItem,
   tags: ["autodocs"],
-} satisfies Meta<typeof ReservationItem>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ReservationItem>;
 
 export const Default: Story = {
   args: {
+    isPast: false,
     reservation: {
       id: "1",
       datetime: "2023年03月06日 12:30",
       task: "買取予約",
-      storeName: "t 横浜町田総本店",
+      storeName: "ｔ横浜町田総本店",
       storeUrl: "#",
     },
   },
 };
 
-export const LongText: Story = {
+export const Past: Story = {
   args: {
+    isPast: true,
     reservation: {
       id: "2",
-      datetime: "2023年12月31日 23:59",
-      task: "UPPIT(持込取付予約) - タイヤ交換・アライメント調整",
-      storeName: "t 札幌新発寒店（北海道エリア店舗）",
+      datetime: "2023年01月10日 15:30",
+      task: "買取予約",
+      storeName: "ｔ盛岡インター店",
       storeUrl: "#",
     },
   },

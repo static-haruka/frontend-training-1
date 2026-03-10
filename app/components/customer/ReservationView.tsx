@@ -6,14 +6,7 @@ import HistoryFilters, { FilterState } from "./HistoryFilters";
 import Pagination from "./Pagination";
 import ReservationItem from "./ReservationItem";
 import type { Customer } from "./mocks";
-
-export type Reservation = {
-  id: string;
-  datetime: string;
-  task: string;
-  storeName: string;
-  storeUrl: string;
-};
+import { fetchReservations } from "./mockReservations";
 
 const isPastDate = (datetimeStr: string): boolean => {
   const normalizedDatetimeStr = datetimeStr.replace("年", "/").replace("月", "/").replace("日", "");
@@ -21,30 +14,6 @@ const isPastDate = (datetimeStr: string): boolean => {
   const now = new Date();
   return reservationDate < now;
 };
-
-const mockPurchaseReservations: Reservation[] = [
-  { id: "1", datetime: "2023年03月06日 12:30", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "2", datetime: "2023年03月02日 11:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "3", datetime: "2023年02月27日 12:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "4", datetime: "2023年01月29日 13:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "5", datetime: "2023年01月27日 11:30", task: "買取予約", storeName: "t 盛岡インター店", storeUrl: "#" },
-  { id: "6", datetime: "2023年01月27日 11:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "7", datetime: "2023年01月25日 12:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "8", datetime: "2023年01月22日 12:00", task: "買取予約", storeName: "t 札幌厚別店", storeUrl: "#" },
-  { id: "9", datetime: "2023年01月17日 12:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "10", datetime: "2023年01月10日 15:30", task: "買取予約", storeName: "t 盛岡インター店", storeUrl: "#" },
-  
-  { id: "11", datetime: "2023年03月06日 12:30", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "12", datetime: "2023年03月02日 11:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "13", datetime: "2023年02月27日 12:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "14", datetime: "2023年01月29日 13:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "15", datetime: "2023年01月27日 11:30", task: "買取予約", storeName: "t 盛岡インター店", storeUrl: "#" },
-  { id: "16", datetime: "2023年01月27日 11:00", task: "買取予約", storeName: "t 横浜町田総本店", storeUrl: "#" },
-  { id: "17", datetime: "2023年01月25日 12:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "18", datetime: "2023年01月22日 12:00", task: "買取予約", storeName: "t 札幌厚別店", storeUrl: "#" },
-  { id: "19", datetime: "2023年01月17日 12:00", task: "買取予約", storeName: "t 札幌新発寒店", storeUrl: "#" },
-  { id: "20", datetime: "2023年01月10日 15:30", task: "買取予約", storeName: "t 盛岡インター店", storeUrl: "#" },
-];
 
 const ITEMS_PER_PAGE = 10;
 
@@ -64,7 +33,9 @@ export default function ReservationView({ customer }: Props) {
   const [purchaseFilter, setPurchaseFilter] = useState<"future" | "all">("future");
   const [uppitFilter, setUppitFilter] = useState<"future" | "all">("future");
 
-  const filteredReservations = mockPurchaseReservations.filter((res) => {
+  const reservations = fetchReservations(customer.id);
+
+  const filteredReservations = reservations.filter((res) => {
     if (purchaseFilter === "future") {
       return !isPastDate(res.datetime);
     }
@@ -147,7 +118,6 @@ export default function ReservationView({ customer }: Props) {
         )}
       </Section>
 
-      {/* UPPIT(持込取付予約)セクション */}
       <Section>
         <SectionTitle>UPPIT(持込取付予約)</SectionTitle>
         <ToggleWrapper>
