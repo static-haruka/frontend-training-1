@@ -291,6 +291,7 @@ const ProductRow = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
+    gap: 4px;
   }
 `;
 
@@ -306,6 +307,10 @@ const ProductPrice = styled.div`
   font-weight: 700;
   color: #1f6feb;
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const Table = styled.div`
@@ -321,13 +326,19 @@ const Tr = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 4px;
+    padding: 10px 0;
   }
 `;
 
 const Th = styled.div`
   font-size: 12px;
   color: #666;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+    color: #999;
+  }
 `;
 
 const Td = styled.div`
@@ -360,31 +371,57 @@ const Actions = styled.div`
   display: grid;
   gap: 14px;
   justify-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    justify-items: stretch;
+    gap: 10px;
+
+    & > *:last-child {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+  }
 `;
 
 const ActionLink = styled.button`
-  border: none;
+  border: 1px solid #1f6feb;
   background: transparent;
   color: #1f6feb;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
+  border-radius: 6px;
+  padding: 8px 16px;
 
   &:hover {
-    text-decoration: underline;
+    background: #f0f6ff;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+    font-size: 13px;
   }
 `;
 
 const ActionDanger = styled.button`
-  border: none;
+  border: 1px solid #d22;
   background: transparent;
   color: #d22;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
+  border-radius: 6px;
+  padding: 8px 16px;
 
   &:hover {
-    text-decoration: underline;
+    background: #fff5f5;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 12px;
+    font-size: 13px;
   }
 `;
 
@@ -401,6 +438,7 @@ const CommentHeader = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 `;
 
@@ -425,6 +463,7 @@ const CommentFilters = styled.div`
 const FilterLabel = styled.span`
   font-size: 12px;
   color: #666;
+  flex-shrink: 0;
 `;
 
 const FilterSelect = styled.select`
@@ -480,6 +519,13 @@ const SendButtonSmall = styled.button`
   color: #fff;
   cursor: pointer;
   flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+
+  &:hover {
+    background: #1a6ed8;
+    border-color: #1a6ed8;
+  }
 `;
 
 const CommentList = styled.div`

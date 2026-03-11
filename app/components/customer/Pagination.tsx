@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function Pagination({ page, totalPages, onChange }: Props) {
-  const pages = makePages(totalPages);
+  const pages = makePages(page, totalPages);
 
   return (
     <Wrap>
@@ -18,15 +18,19 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
       </PagerButton>
 
       <Pages>
-        {pages.map((p) => (
-          <PageButton
-            key={p}
-            aria-current={p === page ? "true" : "false"}
-            onClick={() => onChange(p)}
-          >
-            {p}
-          </PageButton>
-        ))}
+        {pages.map((p, i) =>
+          p === null ? (
+            <Ellipsis key={`ellipsis-${i}`}>…</Ellipsis>
+          ) : (
+            <PageButton
+              key={p}
+              aria-current={p === page ? "true" : "false"}
+              onClick={() => onChange(p)}
+            >
+              {p}
+            </PageButton>
+          )
+        )}
       </Pages>
 
       <PagerButton disabled={page >= totalPages} onClick={() => onChange(page + 1)}>
@@ -36,14 +40,35 @@ export default function Pagination({ page, totalPages, onChange }: Props) {
   );
 }
 
-function makePages(total: number) {
-  const arr: number[] = [];
-  let i = 1;
-  while (i <= total) {
-    arr.push(i);
-    i += 1;
+/**
+ * ページ番号リストを生成。
+ * モバイル向けに「現在ページ周辺 ±2」だけ表示し、端は省略記号で繋ぐ。
+ * null は省略記号を表す。
+ */
+function makePages(current: number, total: number): (number | null)[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
   }
-  return arr;
+
+  const pages: (number | null)[] = [];
+  const delta = 2;
+
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  pages.push(1);
+
+  if (left > 2) pages.push(null);
+
+  for (let i = left; i <= right; i++) {
+    pages.push(i);
+  }
+
+  if (right < total - 1) pages.push(null);
+
+  pages.push(total);
+
+  return pages;
 }
 
 const Wrap = styled.div`
@@ -55,32 +80,28 @@ const Wrap = styled.div`
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    gap: 8px;
+    gap: 6px;
+    padding: 12px 0;
   }
 `;
 
 const Pages = styled.div`
   display: flex;
-  gap: 8px;
-  max-width: 420px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-
-  @media (max-width: 768px) {
-    max-width: 100%;
-  }
+  gap: 6px;
+  align-items: center;
 `;
 
 const PageButton = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 4px;
   border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   color: #333;
   flex: 0 0 auto;
+  transition: background 0.1s;
 
   &:hover {
     background: #f6f6f6;
@@ -99,18 +120,33 @@ const PageButton = styled.button`
   &[aria-current="true"]:hover {
     background: #111;
   }
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+`;
+
+const Ellipsis = styled.span`
+  width: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  user-select: none;
 `;
 
 const PagerButton = styled.button`
-  height: 28px;
-  padding: 0 10px;
+  height: 32px;
+  padding: 0 12px;
   border-radius: 4px;
   border: 1px solid #dcdcdc;
   background: #fff;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   color: #333;
   flex: 0 0 auto;
+  transition: background 0.1s;
 
   &:hover:not(:disabled) {
     background: #f6f6f6;
@@ -123,5 +159,11 @@ const PagerButton = styled.button`
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
   }
 `;

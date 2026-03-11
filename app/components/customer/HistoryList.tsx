@@ -63,28 +63,23 @@ const Row = styled.div`
   column-gap: 14px;
 
   min-height: 68px;
-  padding: 10px 10px;
+  padding: 10px;
 
   border-bottom: 1px solid #e6e6e6;
   background: #fff;
   cursor: pointer;
 
-  &:hover {
-    background: #fafafa;
-  }
-
-  &:active {
-    background: #f5f5f5;
-  }
+  &:hover { background: #fafafa; }
+  &:active { background: #f5f5f5; }
 
   @media (max-width: 768px) {
     grid-template-columns: 40px 1fr 24px;
     grid-template-areas:
-      "icon meta chevron"
-      "icon title chevron"
-      "icon right chevron";
+      "icon meta    chevron"
+      "icon title   chevron"
+      "icon right   chevron";
     column-gap: 10px;
-    row-gap: 6px;
+    row-gap: 4px;
     align-items: start;
     padding: 12px 8px;
   }
@@ -112,17 +107,13 @@ const Circle = styled.div`
 
 const CommentBadge = styled.div`
   position: absolute;
-  top: 10px;
-  left: 32px;
+  top: -4px;
+  left: 16px;
   width: 14px;
   height: 10px;
   border-radius: 2px;
   background: #ff9f1a;
-
-  @media (max-width: 768px) {
-    left: 24px;
-    top: 6px;
-  }
+  box-shadow: 0 0 0 2px #fff;
 `;
 
 const Meta = styled.div`
@@ -151,7 +142,6 @@ const MetaLine = styled.div`
 
 const MetaCar = styled.div<{ $isUnset: boolean }>`
   color: ${(p) => (p.$isUnset ? "#d60000" : "#666")};
-
   flex: 0 0 120px;
   min-width: 0;
   white-space: nowrap;
@@ -171,17 +161,8 @@ const KindTag = styled.span<{ kind: TransactionKind }>`
   color: #000;
   background: #f2f2f2;
 
-  ${(p) =>
-    p.kind === "purchase" &&
-    `
-      background: #fff3c4;
-    `}
-
-  ${(p) =>
-    p.kind === "assessment" &&
-    `
-      background: #e6f5ea;
-    `}
+  ${(p) => p.kind === "purchase" && `background: #fff3c4;`}
+  ${(p) => p.kind === "assessment" && `background: #e6f5ea;`}
 `;
 
 const Title = styled.div`
@@ -189,7 +170,6 @@ const Title = styled.div`
   font-weight: 800;
   color: #111;
   min-width: 0;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -227,7 +207,6 @@ const Shop = styled.div`
   margin-top: 2px;
   font-size: 10px;
   color: #aaa;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

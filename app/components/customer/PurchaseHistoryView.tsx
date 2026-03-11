@@ -217,20 +217,15 @@ const SearchArea = styled.div`
   gap: 10px;
   flex: 1;
   min-width: 0;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 320px;
+  flex: 1;
   min-width: 0;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    flex: 1;
+  @media (min-width: 769px) {
+    max-width: 320px;
   }
 `;
 
@@ -283,7 +278,6 @@ const RightArea = styled.div`
   min-width: 0;
 
   @media (max-width: 768px) {
-    width: 100%;
     flex-direction: column;
     align-items: stretch;
   }
@@ -294,10 +288,6 @@ const DateGroup = styled.div`
   align-items: center;
   gap: 8px;
   min-width: 0;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 `;
 
 const DateInput = styled.input`
@@ -308,10 +298,11 @@ const DateInput = styled.input`
   background: #fff;
   min-width: 0;
   box-sizing: border-box;
+  flex: 1;
 
-  @media (max-width: 768px) {
-    flex: 1;
-    width: 100%;
+  @media (min-width: 769px) {
+    width: 140px;
+    flex: unset;
   }
 `;
 
@@ -329,22 +320,18 @@ const CarSelect = styled.select`
   background: #fff;
   min-width: 0;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const CountRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   min-height: 44px;
   min-width: 0;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
     min-height: auto;
     padding-top: 8px;
   }
@@ -356,17 +343,12 @@ const CountText = styled.div`
 `;
 
 const MemoOnly = styled.label`
-  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
   color: #666;
-  flex-wrap: wrap;
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-  }
+  cursor: pointer;
 
   input {
     width: 14px;

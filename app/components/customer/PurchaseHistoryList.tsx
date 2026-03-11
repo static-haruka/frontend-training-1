@@ -21,12 +21,12 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
             href={`/customer/${customerId}/purchase/${it.id}`}
             aria-label={`購入履歴の詳細: ${it.title || "詳細"}`}
           >
+            {/* ── PC レイアウト ── */}
             <Left>
               <IconWrap aria-hidden="true">
                 {renderIcon(it.icon)}
                 {hasComment ? <CommentBadge aria-label="コメントあり">💬</CommentBadge> : null}
               </IconWrap>
-
               <Meta>
                 <DateText>{it.date}</DateText>
                 {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
@@ -50,6 +50,34 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
               <ShopText>{it.shopLabel || "\u00A0"}</ShopText>
               <Chevron aria-hidden="true">›</Chevron>
             </Right>
+
+            {/* ── モバイル専用レイアウト ── */}
+            <MobileTop>
+              <MobileTopLeft>
+                <IconWrap aria-hidden="true">
+                  {renderIcon(it.icon)}
+                  {hasComment ? <CommentBadge aria-label="コメントあり">💬</CommentBadge> : null}
+                </IconWrap>
+                <Meta>
+                  <DateText>{it.date}</DateText>
+                  {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
+                  {it.statusLabel ? (
+                    <Status tone={it.statusTone}>{it.statusLabel}</Status>
+                  ) : (
+                    <Status tone="muted">&nbsp;</Status>
+                  )}
+                </Meta>
+              </MobileTopLeft>
+              <AmountText>¥ {formatYen(it.amountYen)}</AmountText>
+            </MobileTop>
+
+            <MobileBottom>
+              <TitleTextMobile>{it.title || "\u00A0"}</TitleTextMobile>
+              <MobileBottomRight>
+                <ShopTextMobile>{it.shopLabel || "\u00A0"}</ShopTextMobile>
+                <Chevron aria-hidden="true">›</Chevron>
+              </MobileBottomRight>
+            </MobileBottom>
           </Row>
         );
       })}
@@ -70,7 +98,7 @@ function renderIcon(kind: PurchaseHistoryItem["icon"]) {
   return "🔗";
 }
 
-/* styles */
+/* ===================== styles ===================== */
 
 const List = styled.div`
   border-top: 1px solid #e6e6e6;
@@ -81,18 +109,14 @@ const Row = styled(Link)`
   grid-template-columns: 220px 1fr 140px 220px;
   gap: 12px;
   align-items: center;
-
   min-height: 78px;
   border-bottom: 1px solid #e6e6e6;
   padding: 10px 8px;
-
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 
-  &:hover {
-    background: #fafafa;
-  }
+  &:hover { background: #fafafa; }
 
   &:focus-visible {
     outline: 2px solid #1f6feb;
@@ -101,18 +125,84 @@ const Row = styled(Link)`
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     padding: 12px 8px;
+    min-height: unset;
   }
 `;
+
+/* ── PC 用（モバイルで非表示） ── */
 
 const Left = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
+  @media (max-width: 768px) { display: none; }
 `;
+
+const TitleArea = styled.div`
+  min-width: 0;
+  @media (max-width: 768px) { display: none; }
+`;
+
+const AmountArea = styled.div`
+  text-align: left;
+  @media (max-width: 768px) { display: none; }
+`;
+
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+  @media (max-width: 768px) { display: none; }
+`;
+
+/* ── モバイル専用（PCで非表示） ── */
+
+const MobileTop = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+  }
+`;
+
+const MobileTopLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+`;
+
+const MobileBottom = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    padding-left: 54px; /* IconWrap(44px) + gap(10px) */
+  }
+`;
+
+const MobileBottomRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+`;
+
+/* ── 共通 ── */
 
 const IconWrap = styled.div`
   position: relative;
@@ -164,10 +254,6 @@ const Status = styled.div<{ tone: "danger" | "muted" }>`
   color: ${(p) => (p.tone === "danger" ? "#d22" : "#999")};
 `;
 
-const TitleArea = styled.div`
-  min-width: 0;
-`;
-
 const TitleText = styled.div`
   font-size: 13px;
   font-weight: 600;
@@ -175,33 +261,23 @@ const TitleText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  @media (max-width: 768px) {
-    white-space: normal;
-    word-break: break-word;
-  }
 `;
 
-const AmountArea = styled.div`
-  text-align: left;
+const TitleTextMobile = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
 `;
 
 const AmountText = styled.div`
   font-size: 13px;
   font-weight: 700;
   color: #1f6feb;
-`;
-
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  min-width: 0;
-
-  @media (max-width: 768px) {
-    justify-content: space-between;
-  }
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const ShopText = styled.div`
@@ -211,11 +287,12 @@ const ShopText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
 
-  @media (max-width: 768px) {
-    white-space: normal;
-    word-break: break-word;
-  }
+const ShopTextMobile = styled.div`
+  font-size: 12px;
+  color: #666;
+  word-break: break-word;
 `;
 
 const Chevron = styled.div`

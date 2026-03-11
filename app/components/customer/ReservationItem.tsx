@@ -45,7 +45,7 @@ const Card = styled.div<{ $isPast: boolean }>`
   background-color: ${(props) => (props.$isPast ? "#f5f5f5" : "#fcfcfc")};
 
   @media (max-width: 768px) {
-    padding: 16px;
+    padding: 14px 12px;
   }
 `;
 
@@ -76,33 +76,29 @@ const CardBody = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 10px;
   }
 `;
 
 const InfoBlock = styled.div`
   display: flex;
   flex: 1;
-  gap: 24px;
-  align-items: center;
+  gap: 16px;
+  align-items: baseline;
   min-width: 0;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    gap: 8px;
     align-items: flex-start;
-    gap: 4px;
   }
 `;
 
 const InfoLabel = styled.span`
-  font-size: 13px;
-  color: #666;
-  width: 60px;
+  font-size: 12px;
+  color: #888;
+  width: 64px;
   flex-shrink: 0;
-
-  @media (max-width: 768px) {
-    width: auto;
-  }
+  padding-top: 2px;
 `;
 
 const InfoValue = styled.span`
@@ -123,11 +119,9 @@ const StoreLink = styled.a`
 `;
 
 const ButtonBlock = styled.div`
-  margin-left: auto;
   flex-shrink: 0;
 
   @media (max-width: 768px) {
-    margin-left: 0;
     width: 100%;
   }
 `;

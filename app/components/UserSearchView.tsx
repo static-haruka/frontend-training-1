@@ -68,7 +68,6 @@ export default function UserSearchView({
                   ) : (
                     users.map((user) => {
                       const isSelected = selectedId === user.crooooberId;
-
                       return (
                         <TableRow
                           key={user.crooooberId}
@@ -94,7 +93,6 @@ export default function UserSearchView({
               <BackButton type="button" onClick={onBack}>
                 戻る
               </BackButton>
-
               <DecideButton type="button" onClick={onDecide} disabled={selectedId === null}>
                 決定
               </DecideButton>
@@ -145,12 +143,11 @@ const Title = styled.div`
 
 const SearchInputWrap = styled.div`
   position: relative;
-  flex: 0 0 360px;
+  flex: 1;
   min-width: 0;
 
-  @media (max-width: 768px) {
-    flex: 1 1 auto;
-    width: 100%;
+  @media (min-width: 769px) {
+    max-width: 360px;
   }
 `;
 
@@ -194,10 +191,9 @@ const SearchButton = styled.button`
   font-weight: 600;
   border: 1px solid #0075af;
   white-space: nowrap;
+  flex-shrink: 0;
 
-  &:hover {
-    opacity: 0.92;
-  }
+  &:hover { opacity: 0.92; }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -212,11 +208,10 @@ const TableScroller = styled.div`
 const Table = styled.table`
   margin-top: 24px;
   width: 100%;
-  min-width: 720px;
+  min-width: 640px;
   border-collapse: collapse;
 
-  th,
-  td {
+  th, td {
     border-bottom: 1px solid #e5e7eb;
     padding: 14px 20px;
     font-size: 14px;
@@ -232,10 +227,9 @@ const Table = styled.table`
 
 const TableRow = styled.tr<{ $selected: boolean }>`
   background: ${(p) => (p.$selected ? "#f3f4f6" : "transparent")};
+  cursor: pointer;
 
-  &:hover {
-    background: #f3f4f6;
-  }
+  &:hover { background: #f3f4f6; }
 `;
 
 const NoResultRow = styled.tr`
@@ -252,7 +246,7 @@ const ButtonRow = styled.div`
   margin-top: 40px;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 12px;
   }
 `;
@@ -266,9 +260,7 @@ const BackButton = styled.button`
   background: #fff;
   font-weight: 600;
 
-  &:hover {
-    opacity: 0.92;
-  }
+  &:hover { opacity: 0.92; }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -285,9 +277,7 @@ const DecideButton = styled.button`
   color: #ffffff;
   font-weight: 600;
 
-  &:hover {
-    opacity: 0.92;
-  }
+  &:hover { opacity: 0.92; }
 
   &:disabled {
     opacity: 0.45;

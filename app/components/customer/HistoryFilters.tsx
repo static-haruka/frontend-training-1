@@ -85,7 +85,6 @@ const Wrap = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
-    height: auto;
     gap: 12px;
   }
 `;
@@ -96,20 +95,15 @@ const SearchArea = styled.div`
   gap: 10px;
   flex: 1;
   min-width: 0;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 320px;
+  flex: 1;
   min-width: 0;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    flex: 1;
+  @media (min-width: 769px) {
+    max-width: 320px;
   }
 `;
 
@@ -150,13 +144,8 @@ const SearchButton = styled.button`
   white-space: nowrap;
   flex-shrink: 0;
 
-  &:hover {
-    background: #256fd4;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
+  &:hover { background: #256fd4; }
+  &:active { transform: translateY(1px); }
 
   @media (max-width: 768px) {
     padding: 0 14px;
@@ -170,7 +159,6 @@ const RightArea = styled.div`
   min-width: 0;
 
   @media (max-width: 768px) {
-    width: 100%;
     flex-direction: column;
     align-items: stretch;
   }
@@ -181,10 +169,6 @@ const Period = styled.div`
   align-items: center;
   gap: 8px;
   min-width: 0;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 `;
 
 const DateInput = styled.input`
@@ -195,14 +179,15 @@ const DateInput = styled.input`
   background: #fff;
   min-width: 0;
   box-sizing: border-box;
+  flex: 1;
 
   &:not(:focus):invalid {
     color: transparent;
   }
 
-  @media (max-width: 768px) {
-    flex: 1;
-    width: 100%;
+  @media (min-width: 769px) {
+    width: 140px;
+    flex: unset;
   }
 `;
 
@@ -220,8 +205,5 @@ const RegisteredCarSelect = styled.select`
   background: #fff;
   min-width: 0;
   box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  width: 100%;
 `;

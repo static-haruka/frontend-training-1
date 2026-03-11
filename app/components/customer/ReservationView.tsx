@@ -106,6 +106,7 @@ export default function ReservationView({ customer }: Props) {
           <ToggleGroup>
             <ToggleOption
               $active={purchaseFilter === "future"}
+              $isFirst
               onClick={() => {
                 setPurchaseFilter("future");
                 setPage(1);
@@ -152,6 +153,7 @@ export default function ReservationView({ customer }: Props) {
           <ToggleGroup>
             <ToggleOption
               $active={uppitFilter === "future"}
+              $isFirst
               onClick={() => setUppitFilter("future")}
             >
               本日以降の予約のみ
@@ -183,11 +185,6 @@ const ListHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `;
 
 const CountText = styled.span`
@@ -227,12 +224,10 @@ const SectionTitle = styled.h3`
 `;
 
 const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
   margin-bottom: 16px;
 
   @media (max-width: 768px) {
-    justify-content: stretch;
+    display: flex;
   }
 `;
 
@@ -245,21 +240,25 @@ const ToggleGroup = styled.div`
   @media (max-width: 768px) {
     display: flex;
     width: 100%;
-    flex-direction: column;
   }
 `;
 
-const ToggleOption = styled.button<{ $active: boolean }>`
-  padding: 8px 16px;
+const ToggleOption = styled.button<{ $active: boolean; $isFirst?: boolean }>`
+  padding: 8px 20px;
   border: none;
+  border-top: ${(props) => (props.$isFirst ? "none" : "1px solid #ccc")};
   background-color: ${(props) => (props.$active ? "#000" : "#fff")};
   color: ${(props) => (props.$active ? "#fff" : "#666")};
   font-size: 12px;
   cursor: pointer;
   outline: none;
+  flex: 1;
+  white-space: nowrap;
 
-  @media (max-width: 768px) {
-    width: 100%;
+  @media (min-width: 769px) {
+    border-top: none;
+    border-left: ${(props) => (props.$isFirst ? "none" : "1px solid #ccc")};
+    flex: unset;
   }
 `;
 
@@ -280,5 +279,4 @@ const EmptyMessage = styled.div`
 
 const PaginationWrap = styled.div`
   margin-top: 16px;
-  overflow-x: auto;
 `;
