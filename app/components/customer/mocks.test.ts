@@ -12,9 +12,8 @@ test("fetchCustomer: 正しいIDで小池さんが取得できること", () => 
   expect(c?.id).toBe(mockCustomer2.id);
 });
 
-test("fetchCustomer: 一致しない場合は undefined を返すこと", () => {
-  const c = fetchCustomer("unknown-id");
-  expect(c).toBeUndefined();
+test("fetchCustomer: 一致しない場合は throw すること", () => {
+  expect(() => fetchCustomer("unknown-id")).toThrow("Customer not found: unknown-id");
 });
 
 test("fetchTransactions: 正しいIDで取引履歴が取得できること", () => {
@@ -22,7 +21,6 @@ test("fetchTransactions: 正しいIDで取引履歴が取得できること", ()
   expect(list).toBe(mockTransactions2);
 });
 
-test("fetchTransactions: 一致しない場合は空配列を返すこと", () => {
-  const list = fetchTransactions("unknown-id");
-  expect(list).toEqual([]);
+test("fetchTransactions: 一致しない場合は throw すること", () => {
+  expect(() => fetchTransactions("unknown-id")).toThrow("Customer not found: unknown-id");
 });

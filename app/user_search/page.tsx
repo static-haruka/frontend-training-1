@@ -1,4 +1,4 @@
-'use client'; /* Styled Components を使うために明示（ブラウザで動くコンポーネントを生成） */
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

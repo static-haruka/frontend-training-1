@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import type { Reservation } from "./ReservationView";
+import type { Reservation } from "./mockReservations";
 
 type Props = {
   reservation: Reservation;

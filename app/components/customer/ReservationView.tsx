@@ -31,8 +31,6 @@ export default function ReservationView({ customer }: Props) {
   });
   const [page, setPage] = useState(1);
   const [purchaseFilter, setPurchaseFilter] = useState<"future" | "all">("future");
-  const [uppitFilter, setUppitFilter] = useState<"future" | "all">("future");
-
   const reservations = fetchReservations(customer.id);
 
   const filteredReservations = reservations.filter((res) => {
@@ -46,8 +44,7 @@ export default function ReservationView({ customer }: Props) {
   const totalPages = Math.max(Math.ceil(totalItems / ITEMS_PER_PAGE), 1); 
   
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentReservations = filteredReservations.slice(startIndex, endIndex);
+  const currentReservations = filteredReservations.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <Container>
@@ -120,22 +117,6 @@ export default function ReservationView({ customer }: Props) {
 
       <Section>
         <SectionTitle>UPPIT(持込取付予約)</SectionTitle>
-        <ToggleWrapper>
-          <ToggleGroup>
-            <ToggleOption 
-              $active={uppitFilter === "future"}
-              onClick={() => setUppitFilter("future")}
-            >
-              本日以降の予約のみ
-            </ToggleOption>
-            <ToggleOption 
-              $active={uppitFilter === "all"}
-              onClick={() => setUppitFilter("all")}
-            >
-              過去の予約も含む
-            </ToggleOption>
-          </ToggleGroup>
-        </ToggleWrapper>
       </Section>
     </Container>
   );

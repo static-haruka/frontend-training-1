@@ -44,8 +44,7 @@ const reservationsByCustomerId: Record<string, Reservation[]> = {
   [mockCustomer2.crooooberId]: mockReservationsKoike,
 };
 
-export function fetchReservations(customerId: string): Reservation[] | undefined {
+export function fetchReservations(customerId: string): Reservation[] {
   const customer = fetchCustomer(customerId);
-  if (!customer) return [];
-  return reservationsByCustomerId[customer.crooooberId];
+  return reservationsByCustomerId[customer.crooooberId] ?? [];
 }

@@ -54,7 +54,7 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
       return [];
     }
 
-    const list = transactions.slice();
+    const list = (transactions ?? []).slice();
 
     const byCar = filters.carId ? list.filter((t) => t.carId === filters.carId) : list;
 
@@ -111,7 +111,7 @@ export default function CustomerTopView({ customerId: customerIdProp }: Props) {
         </RightTools>
       </CountRow>
 
-      <HistoryList items={paged} cars={customer.cars} />
+      <HistoryList items={paged} />
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </CustomerPageShell>

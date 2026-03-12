@@ -73,13 +73,14 @@ const transactionsByCustomerId: Record<string, Transaction[]> = {
   [mockCustomer2.crooooberId]: mockTransactions2,
 };
 
-export function fetchCustomer(customerId: string): Customer | undefined {
+export function fetchCustomer(customerId: string): Customer {
   const idStr = String(customerId);
-  return customers.find((c) => String(c.id) === idStr || String(c.crooooberId) === idStr);
+  const found = customers.find((c) => String(c.id) === idStr || String(c.crooooberId) === idStr);
+  if (!found) throw new Error(`Customer not found: ${customerId}`);
+  return found;
 }
 
-export function fetchTransactions(customerId: string): Transaction[] | undefined {
+export function fetchTransactions(customerId: string): Transaction[] {
   const customer = fetchCustomer(customerId);
-  if (!customer) return [];
-  return transactionsByCustomerId[customer.crooooberId];
+  return transactionsByCustomerId[customer.crooooberId] ?? [];
 }
