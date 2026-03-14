@@ -17,7 +17,6 @@ export default function CustomerPageShell({ customer, active, children }: Props)
   return (
     <Layout>
       <CustomerSidePanel customer={customer} />
-
       <Main>
         <TopTabs active={active} />
         <MainInner>{children}</MainInner>
@@ -29,14 +28,24 @@ export default function CustomerPageShell({ customer, active, children }: Props)
 const Layout = styled.div`
   display: flex;
   min-height: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Main = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `;
 
 const MainInner = styled.div`
   padding: 24px 24px 16px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 `;

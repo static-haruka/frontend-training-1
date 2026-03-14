@@ -19,7 +19,8 @@ type Props = {
 
 export default function HistoryFilters({ cars, value, onChange }: Props) {
   return (
-    <Wrap>
+    <WrapOuter>
+      <Wrap>
       <SearchArea>
         <SearchInputWrap>
           <SearchIcon aria-hidden="true">
@@ -68,33 +69,36 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
           ))}
         </RegisteredCarSelect>
       </RightArea>
-    </Wrap>
+      </Wrap>
+    </WrapOuter>
   );
 }
 
-/* ---------- styles ---------- */
+const WrapOuter = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+`;
 
 const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-
-  min-width: 980px;
-
-  height: 56px;
-  border-bottom: 1px solid #e6e6e6;
+  min-width: max-content;
 `;
 
 const SearchArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 320px;
+  width: 240px;
 `;
 
 const SearchIcon = styled.div`
@@ -119,6 +123,7 @@ const SearchInput = styled.input`
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   outline: none;
+  box-sizing: border-box;
 `;
 
 const SearchButton = styled.button`
@@ -130,16 +135,14 @@ const SearchButton = styled.button`
   color: #fff;
   font-weight: 800;
   cursor: pointer;
-
   white-space: nowrap;
   flex-shrink: 0;
 
-  &:hover {
-    background: #256fd4;
-  }
+  &:hover { background: #256fd4; }
+  &:active { transform: translateY(1px); }
 
-  &:active {
-    transform: translateY(1px);
+  @media (max-width: 768px) {
+    padding: 0 14px;
   }
 `;
 
@@ -157,25 +160,30 @@ const Period = styled.div`
 
 const DateInput = styled.input`
   height: 34px;
+  width: 140px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+  box-sizing: border-box;
 
   &:not(:focus):invalid {
-  color: transparent;
+    color: transparent;
   }
 `;
 
 const Tilde = styled.span`
   color: #666;
   font-size: 12px;
+  flex-shrink: 0;
 `;
 
 const RegisteredCarSelect = styled.select`
   height: 34px;
+  width: 160px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+  box-sizing: border-box;
 `;

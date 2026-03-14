@@ -180,8 +180,17 @@ const Divider = styled.div`
 const CountRow = styled.div`
   display: flex;
   align-items: center;
-  height: 44px;
+  gap: 12px;
+  min-height: 44px;
   padding: 0;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: auto;
+    padding-top: 8px;
+  }
 `;
 
 const CountText = styled.div`
@@ -195,6 +204,12 @@ const RightTools = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 const CommentOnly = styled.label`
@@ -203,6 +218,7 @@ const CommentOnly = styled.label`
   gap: 8px;
   font-size: 12px;
   color: #666;
+  flex-wrap: wrap;
 
   input {
     width: 14px;

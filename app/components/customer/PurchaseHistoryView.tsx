@@ -3,15 +3,11 @@
 import styled from "styled-components";
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { fetchCustomer } from "./mocks";
 import CustomerPageShell from "./CustomerPageShell";
 import Pagination from "./Pagination";
 import PurchaseHistoryList from "./PurchaseHistoryList";
-import { MOCK_PURCHASE_HISTORY, type PurchaseHistoryItem } from "./purchaseMocks";
-
-type Props = {
-  customerId?: string;
-};
+import { fetchCustomer } from "./mocks";
+import { MOCK_PURCHASE_HISTORY, PurchaseHistoryItem } from "./purchaseMocks";
 
 type FilterState = {
   keyword: string;
@@ -21,28 +17,26 @@ type FilterState = {
   hasMemoOnly: boolean;
 };
 
-function toDateStart(yyyyMmDd: string): Date | null {
-  if (!yyyyMmDd) return null;
-  const [y, m, d] = yyyyMmDd.split("-").map((n) => Number(n));
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d, 0, 0, 0, 0);
+type Props = {
+  customerId?: string;
+};
+
+function parsePurchaseDate(text: string) {
+  const normalized = text.replace("年", "/").replace("月", "/").replace("日", "");
+  const d = new Date(normalized);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-function toDateEnd(yyyyMmDd: string): Date | null {
-  if (!yyyyMmDd) return null;
-  const [y, m, d] = yyyyMmDd.split("-").map((n) => Number(n));
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d, 23, 59, 59, 999);
+function toDateStart(v: string) {
+  if (!v) return null;
+  const d = new Date(`${v}T00:00:00`);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-function parsePurchaseDate(dotted: string): Date | null {
-  const m = dotted.match(/^(\d{4})\.(\d{2})\.(\d{2})$/);
-  if (!m) return null;
-  const y = Number(m[1]);
-  const mo = Number(m[2]);
-  const d = Number(m[3]);
-  if (!y || !mo || !d) return null;
-  return new Date(y, mo - 1, d, 0, 0, 0, 0);
+function toDateEnd(v: string) {
+  if (!v) return null;
+  const d = new Date(`${v}T23:59:59`);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 function buildCarOptionsFromPurchases(items: PurchaseHistoryItem[]): string[] {
@@ -62,8 +56,10 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
   const customerIdFromParams = typeof raw === "string" ? raw : raw?.[0] ?? "";
   const customerId = customerIdProp ?? customerIdFromParams;
 
-  const resolvedCustomerId = customerId || "12345678901234";
-  const customer = fetchCustomer(resolvedCustomerId);
+  const customer = useMemo(() => {
+    const id = customerId || "12345678901234";
+    return fetchCustomer(id);
+  }, [customerId]);
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: "",
@@ -128,8 +124,8 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
 
   return (
     <CustomerPageShell customer={customer} active="purchase">
-
-      <FiltersBar>
+      <FiltersBarOuter>
+        <FiltersBar>
         <SearchArea>
           <SearchInputWrap>
             <SearchIcon aria-hidden="true">
@@ -147,25 +143,23 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
         </SearchArea>
 
         <RightArea>
-          <Period>
+          <DateGroup>
             <DateInput
-              aria-label="開始日"
               type="date"
-              required
+              aria-label="開始日"
               value={filters.from}
               onChange={(e) => onChangeFilters({ from: e.target.value })}
             />
-            <Tilde>〜</Tilde>
+            <Wave>〜</Wave>
             <DateInput
-              aria-label="終了日"
               type="date"
-              required
+              aria-label="終了日"
               value={filters.to}
               onChange={(e) => onChangeFilters({ to: e.target.value })}
             />
-          </Period>
+          </DateGroup>
 
-          <RegisteredCarSelect
+          <CarSelect
             aria-label="登録車で絞り込む"
             value={filters.carName}
             onChange={(e) => onChangeFilters({ carName: e.target.value })}
@@ -176,53 +170,57 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
                 {name}
               </option>
             ))}
-          </RegisteredCarSelect>
+          </CarSelect>
         </RightArea>
-      </FiltersBar>
+        </FiltersBar>
+      </FiltersBarOuter>
 
       <CountRow>
         <CountText>{filtered.length}件</CountText>
-
-        <RightTools>
-          <MemoOnly>
-            <input
-              type="checkbox"
-              checked={filters.hasMemoOnly}
-              onChange={(e) => onChangeFilters({ hasMemoOnly: e.target.checked })}
-            />
-            <span>メモ付きのみ</span>
-          </MemoOnly>
-        </RightTools>
+        <MemoOnly>
+          <input
+            type="checkbox"
+            checked={filters.hasMemoOnly}
+            onChange={(e) => onChangeFilters({ hasMemoOnly: e.target.checked })}
+          />
+          <span>メモ付きのみ</span>
+        </MemoOnly>
       </CountRow>
 
-      <PurchaseHistoryList customerId={resolvedCustomerId} items={paged} />
+      <PurchaseHistoryList customerId={customerId || "12345678901234"} items={paged} />
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </CustomerPageShell>
   );
 }
 
-/* ---------- styles ---------- */
+/* styles */
+
+const FiltersBarOuter = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+`;
 
 const FiltersBar = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-
-  height: 56px;
-  border-bottom: 1px solid #e6e6e6;
+  min-width: max-content;
 `;
 
 const SearchArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 320px;
+  width: 240px;
 `;
 
 const SearchIcon = styled.div`
@@ -248,6 +246,12 @@ const SearchInput = styled.input`
   border-radius: 6px;
   outline: none;
   box-sizing: border-box;
+  font-size: 14px;
+
+  &:focus {
+    border-color: #2f80ed;
+    box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.15);
+  }
 `;
 
 const SearchButton = styled.button`
@@ -257,31 +261,27 @@ const SearchButton = styled.button`
   border: 1px solid #2f80ed;
   background: #2f80ed;
   color: #fff;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+  font-size: 14px;
 
   &:hover {
     background: #256fd4;
   }
-
-  &:active {
-    transform: translateY(1px);
-  }
 `;
 
 const RightArea = styled.div`
-  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 `;
 
-const Period = styled.div`
+const DateGroup = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 `;
 
 const DateInput = styled.input`
@@ -289,58 +289,63 @@ const DateInput = styled.input`
   width: 140px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
-  padding: 0 10px;
+  padding: 0 8px;
   background: #fff;
   box-sizing: border-box;
+  font-size: 13px;
 
-  &:not(:focus):invalid {
-    color: transparent;
+  &:focus {
+    border-color: #2f80ed;
+    outline: none;
   }
 `;
 
-const Tilde = styled.span`
+const Wave = styled.span`
   color: #666;
   font-size: 12px;
+  flex-shrink: 0;
 `;
 
-const RegisteredCarSelect = styled.select`
+const CarSelect = styled.select`
   height: 36px;
-  width: 200px;
+  width: 160px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
   box-sizing: border-box;
+  font-size: 13px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CountRow = styled.div`
   display: flex;
   align-items: center;
-  height: 44px;
-  margin-top: 10px;
+  gap: 12px;
+  min-height: 36px;
+  min-width: 0;
 `;
 
 const CountText = styled.div`
   font-size: 12px;
   color: #666;
-  line-height: 1;
-`;
-
-const RightTools = styled.div`
-  margin-left: auto;
-  display: flex;
-  align-items: center;
 `;
 
 const MemoOnly = styled.label`
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 12px;
   color: #666;
+  cursor: pointer;
 
   input {
     width: 14px;
     height: 14px;
+    cursor: pointer;
   }
 `;
