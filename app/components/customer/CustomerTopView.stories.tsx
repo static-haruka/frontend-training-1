@@ -6,14 +6,14 @@ const meta: Meta<typeof CustomerTopView> = {
   component: CustomerTopView,
   tags: ["autodocs"],
   args: {
-    customerId: "CUST-0001",
+    customerId: "12345678901234",
   },
   parameters: {
     layout: "fullscreen",
     nextjs: {
       appDirectory: true,
       navigation: {
-        segments: [["customerId", "CUST-0001"]],
+        segments: [["customerId", "12345678901234"]],
       },
     },
   },
@@ -22,9 +22,6 @@ const meta: Meta<typeof CustomerTopView> = {
 export default meta;
 type Story = StoryObj<typeof CustomerTopView>;
 
-/**
- * デフォルトの表示状態
- */
 export const Default: Story = {
   name: "Default",
 };

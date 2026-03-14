@@ -24,7 +24,6 @@ export default function UserSearchView({
   onBack,
   onDecide,
 }: Props) {
-
   return (
     <Page>
       <Card>
@@ -47,54 +46,53 @@ export default function UserSearchView({
           </SearchButton>
         </SearchRow>
 
-        <>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Croooober ID</th>
-                  <th>氏名</th>
-                  <th>電話番号</th>
-                  <th>住所</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.length === 0 ? (
-                  <NoResultRow>
-                    <td colSpan={4}>該当する顧客がいません</td>
-                  </NoResultRow>
-                ) : (
-                  users.map((user) => {
-                    const isSelected = selectedId === user.crooooberId;
+        <TableScroller>
+          <Table>
+            <thead>
+              <tr>
+                <th>Croooober ID</th>
+                <th>氏名</th>
+                <th>電話番号</th>
+                <th>住所</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.length === 0 ? (
+                <NoResultRow>
+                  <td colSpan={4}>該当する顧客がいません</td>
+                </NoResultRow>
+              ) : (
+                users.map((user) => {
+                  const isSelected = selectedId === user.crooooberId;
+                  return (
+                    <TableRow
+                      key={user.crooooberId}
+                      $selected={isSelected}
+                      onClick={() => onSelectUser(user.crooooberId)}
+                      role="button"
+                      tabIndex={0}
+                      aria-selected={isSelected}
+                    >
+                      <td>{user.crooooberId}</td>
+                      <td>{user.name}</td>
+                      <td>{user.phone}</td>
+                      <td>{user.address}</td>
+                    </TableRow>
+                  );
+                })
+              )}
+            </tbody>
+          </Table>
+        </TableScroller>
 
-                    return (
-                      <TableRow
-                        key={user.crooooberId}
-                        $selected={isSelected}
-                        onClick={() => onSelectUser(user.crooooberId)}
-                        role="button"
-                        tabIndex={0}
-                        aria-selected={isSelected}
-                      >
-                        <td>{user.crooooberId}</td>
-                        <td>{user.name}</td>
-                        <td>{user.phone}</td>
-                        <td>{user.address}</td>
-                      </TableRow>
-                    );
-                  })
-                )}
-              </tbody>
-            </Table>
-
-            <ButtonRow>
-              <BackButton type="button" onClick={onBack}>
-                戻る
-              </BackButton>
-              <DecideButton type="button" onClick={onDecide} disabled={selectedId === null}>
-                決定
-              </DecideButton>
-            </ButtonRow>
-        </>
+        <ButtonRow>
+          <BackButton type="button" onClick={onBack}>
+            戻る
+          </BackButton>
+          <DecideButton type="button" onClick={onDecide} disabled={selectedId === null}>
+            決定
+          </DecideButton>
+        </ButtonRow>
       </Card>
     </Page>
   );
@@ -106,7 +104,15 @@ const Page = styled.div`
   min-height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
   width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
 `;
 
 const Card = styled.section`
@@ -119,6 +125,7 @@ const Card = styled.section`
 const SearchRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   margin-bottom: 32px;
   min-width: 0;

@@ -15,26 +15,26 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
       {items.map((it) => {
         const hasComment = it.hasMemo || ((it as any).comments?.length ?? 0) > 0;
 
+        const icon = renderIcon(it.icon);
+        const badge = hasComment
+          ? <CommentBadge aria-label="コメントあり">💬</CommentBadge>
+          : null;
+
         return (
           <Row
             key={it.id}
             href={`/customer/${customerId}/purchase/${it.id}`}
             aria-label={`購入履歴の詳細: ${it.title || "詳細"}`}
           >
-            {/* ── PC レイアウト ── */}
+            {/* ── PC 用（モバイルで非表示） ── */}
             <Left>
-              <IconWrap aria-hidden="true">
-                {renderIcon(it.icon)}
-                {hasComment ? <CommentBadge aria-label="コメントあり">💬</CommentBadge> : null}
-              </IconWrap>
+              <IconWrap aria-hidden="true">{icon}{badge}</IconWrap>
               <Meta>
                 <DateText>{it.date}</DateText>
                 {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
-                {it.statusLabel ? (
-                  <Status tone={it.statusTone}>{it.statusLabel}</Status>
-                ) : (
-                  <Status tone="muted">&nbsp;</Status>
-                )}
+                {it.statusLabel
+                  ? <Status tone={it.statusTone}>{it.statusLabel}</Status>
+                  : <Status tone="muted">&nbsp;</Status>}
               </Meta>
             </Left>
 
@@ -51,21 +51,16 @@ export default function PurchaseHistoryList({ customerId, items }: Props) {
               <Chevron aria-hidden="true">›</Chevron>
             </Right>
 
-            {/* ── モバイル専用レイアウト ── */}
+            {/* ── モバイル専用（PC で非表示） ── */}
             <MobileTop>
               <MobileTopLeft>
-                <IconWrap aria-hidden="true">
-                  {renderIcon(it.icon)}
-                  {hasComment ? <CommentBadge aria-label="コメントあり">💬</CommentBadge> : null}
-                </IconWrap>
+                <IconWrap aria-hidden="true">{icon}{badge}</IconWrap>
                 <Meta>
                   <DateText>{it.date}</DateText>
                   {it.carName ? <CarText>{it.carName}</CarText> : <CarText>&nbsp;</CarText>}
-                  {it.statusLabel ? (
-                    <Status tone={it.statusTone}>{it.statusLabel}</Status>
-                  ) : (
-                    <Status tone="muted">&nbsp;</Status>
-                  )}
+                  {it.statusLabel
+                    ? <Status tone={it.statusTone}>{it.statusLabel}</Status>
+                    : <Status tone="muted">&nbsp;</Status>}
                 </Meta>
               </MobileTopLeft>
               <AmountText>¥ {formatYen(it.amountYen)}</AmountText>
@@ -106,7 +101,7 @@ const List = styled.div`
 
 const Row = styled(Link)`
   display: grid;
-  grid-template-columns: 220px 1fr 140px 220px;
+  grid-template-columns: minmax(160px, 220px) minmax(120px, 1fr) minmax(80px, 110px) minmax(140px, 220px);
   gap: 12px;
   align-items: center;
   min-height: 78px;
@@ -162,7 +157,7 @@ const Right = styled.div`
   @media (max-width: 768px) { display: none; }
 `;
 
-/* ── モバイル専用（PCで非表示） ── */
+/* ── モバイル専用（PC で非表示） ── */
 
 const MobileTop = styled.div`
   display: none;
@@ -191,7 +186,7 @@ const MobileBottom = styled.div`
     justify-content: space-between;
     gap: 8px;
     width: 100%;
-    padding-left: 54px; /* IconWrap(44px) + gap(10px) */
+    padding-left: 54px;
   }
 `;
 

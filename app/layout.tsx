@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/styled-components-registry";
 import styled from "styled-components";
-import Link from "next/link";
 import Sidebar from "./components/Sidebar";
 
 const geistSans = Geist({
@@ -37,15 +36,16 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StyledComponentsRegistry>
           <App>
+            <Header>
+              <HeaderLeft>
+                <HeaderTitle>メンテナンスノート</HeaderTitle>
+              </HeaderLeft>
+              <HeaderRight>UPGARAGE練馬店</HeaderRight>
+            </Header>
+
             <Body>
               <Sidebar />
               <Main>
-                <Header>
-                  <HeaderLeft>
-                    <HeaderTitle>メンテナンスノート</HeaderTitle>
-                  </HeaderLeft>
-                  <HeaderRight>UPGARAGE練馬店</HeaderRight>
-                </Header>
                 <Content>{children}</Content>
               </Main>
             </Body>
@@ -63,33 +63,20 @@ const App = styled.div`
   width: 100vw;
   overflow: hidden;
   display: flex;
-`;
-
-const Body = styled.div`
-  flex: 1;
-  display: flex;
-  min-width: 0;
-`;
-
-const Main = styled.div`
-  flex: 1;
-  display: flex;
   flex-direction: column;
-  min-width: 0;
-  overflow-y: auto;
 `;
 
 const Header = styled.header`
-  padding: 16px;
-  background:  #F7F7F7;
+  height: 48px;
+  flex-shrink: 0;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 0 16px;
 `;
 
-const HeaderLeft = styled.div`
-`;
+const HeaderLeft = styled.div``;
 
 const HeaderTitle = styled.div`
   font-size: 14px;
@@ -99,6 +86,20 @@ const HeaderTitle = styled.div`
 const HeaderRight = styled.div`
   margin-left: auto;
   font-size: 12px;
+`;
+
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  min-height: 0;
+`;
+
+const Main = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
 `;
 
 const Content = styled.main`

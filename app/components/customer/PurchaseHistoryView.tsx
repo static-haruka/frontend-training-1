@@ -56,8 +56,10 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
   const customerIdFromParams = typeof raw === "string" ? raw : raw?.[0] ?? "";
   const customerId = customerIdProp ?? customerIdFromParams;
 
-  const resolvedCustomerId = customerId || "12345678901234";
-  const customer = fetchCustomer(resolvedCustomerId);
+  const customer = useMemo(() => {
+    const id = customerId || "12345678901234";
+    return fetchCustomer(id);
+  }, [customerId]);
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: "",
@@ -122,7 +124,8 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
 
   return (
     <CustomerPageShell customer={customer} active="purchase">
-      <FiltersBar>
+      <FiltersBarOuter>
+        <FiltersBar>
         <SearchArea>
           <SearchInputWrap>
             <SearchIcon aria-hidden="true">
@@ -157,9 +160,9 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
           </DateGroup>
 
           <CarSelect
+            aria-label="登録車で絞り込む"
             value={filters.carName}
             onChange={(e) => onChangeFilters({ carName: e.target.value })}
-            aria-label="車種"
           >
             <option value="">登録車で絞り込む</option>
             {carOptions.map((name) => (
@@ -169,7 +172,8 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
             ))}
           </CarSelect>
         </RightArea>
-      </FiltersBar>
+        </FiltersBar>
+      </FiltersBarOuter>
 
       <CountRow>
         <CountText>{filtered.length}件</CountText>
@@ -183,7 +187,7 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
         </MemoOnly>
       </CountRow>
 
-      <PurchaseHistoryList customerId={resolvedCustomerId} items={paged} />
+      <PurchaseHistoryList customerId={customerId || "12345678901234"} items={paged} />
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </CustomerPageShell>
@@ -192,39 +196,31 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
 
 /* styles */
 
+const FiltersBarOuter = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+`;
+
 const FiltersBar = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  width: 100%;
-  min-width: 0;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e6e6e6;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
+  min-width: max-content;
 `;
 
 const SearchArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
-  min-width: 0;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  flex: 1;
-  min-width: 0;
-
-  @media (min-width: 769px) {
-    max-width: 320px;
-  }
+  width: 240px;
 `;
 
 const SearchIcon = styled.div`
@@ -244,12 +240,18 @@ const SearchIcon = styled.div`
 
 const SearchInput = styled.input`
   width: 100%;
-  height: 34px;
+  height: 36px;
   padding: 0 12px 0 34px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   outline: none;
   box-sizing: border-box;
+  font-size: 14px;
+
+  &:focus {
+    border-color: #2f80ed;
+    box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.15);
+  }
 `;
 
 const SearchButton = styled.button`
@@ -263,6 +265,7 @@ const SearchButton = styled.button`
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+  font-size: 14px;
 
   &:hover {
     background: #256fd4;
@@ -272,35 +275,28 @@ const SearchButton = styled.button`
 const RightArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 0;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
+  gap: 10px;
 `;
 
 const DateGroup = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-width: 0;
+  gap: 6px;
 `;
 
 const DateInput = styled.input`
-  height: 34px;
+  height: 36px;
+  width: 140px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
-  padding: 0 10px;
+  padding: 0 8px;
   background: #fff;
-  min-width: 0;
   box-sizing: border-box;
-  flex: 1;
+  font-size: 13px;
 
-  @media (min-width: 769px) {
-    width: 140px;
-    flex: unset;
+  &:focus {
+    border-color: #2f80ed;
+    outline: none;
   }
 `;
 
@@ -311,28 +307,26 @@ const Wave = styled.span`
 `;
 
 const CarSelect = styled.select`
-  height: 34px;
+  height: 36px;
+  width: 160px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
-  min-width: 0;
   box-sizing: border-box;
-  width: 100%;
+  font-size: 13px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CountRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  min-height: 44px;
+  min-height: 36px;
   min-width: 0;
-
-  @media (max-width: 768px) {
-    min-height: auto;
-    padding-top: 8px;
-  }
 `;
 
 const CountText = styled.div`
@@ -341,9 +335,10 @@ const CountText = styled.div`
 `;
 
 const MemoOnly = styled.label`
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 12px;
   color: #666;
   cursor: pointer;
@@ -351,5 +346,6 @@ const MemoOnly = styled.label`
   input {
     width: 14px;
     height: 14px;
+    cursor: pointer;
   }
 `;
