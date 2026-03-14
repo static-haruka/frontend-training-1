@@ -36,3 +36,12 @@ export const PurchaseActive: Story = {
     active: "purchase",
   },
 };
+
+/**
+ * 「予約一覧」タブがアクティブな状態
+ */
+export const ReservationActive: Story = {
+  args: {
+    active: "reservation",
+  },
+};

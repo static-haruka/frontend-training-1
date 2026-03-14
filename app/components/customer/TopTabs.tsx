@@ -29,16 +29,16 @@ const TABS: {
   { key: "purchase", label: "購入履歴", emoji: "🛒", bg: "#f7f0c9" },
   { key: "assessing", label: "査定中", emoji: "🔍", bg: "#cfeee4" },
   { key: "buy", label: "買取履歴", emoji: "🪙", bg: "#cfeee4" },
-  { key: "reservation", label: "作業予約", emoji: "🔧", bg: "#dde3f2" },
+  { key: "reservation", label: "予約一覧", emoji: "🔧", bg: "#dde3f2" },
   { key: "work", label: "作業履歴", emoji: "🛠️", bg: "#dde3f2" },
 ];
 
-// 今実装しているタブだけ
-const ENABLED_TABS: TabKey[] = ["top", "purchase"];
+const ENABLED_TABS: TabKey[] = ["top", "purchase", "reservation"];
 
 function buildHref(key: TabKey, customerId: string) {
   if (key === "top") return `/customer/${customerId}`;
   if (key === "purchase") return `/customer/${customerId}/purchase`;
+  if (key === "reservation") return `/customer/${customerId}/reservation`;
   return "";
 }
 

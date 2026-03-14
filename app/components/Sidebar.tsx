@@ -270,7 +270,6 @@ const SubMenuIcon = styled.div`
   height: 28px;
   border-radius: 4px;
   background: #0075af;
-  // margin-left: 24px;
 
   display: flex;
   align-items: center;
@@ -342,4 +341,3 @@ const SectionTitle = styled.div`
   margin-bottom: 8px;
   padding-left: 14px;
 `;
-

@@ -1,13 +1,10 @@
-// 共通部分の外枠を集約
-
 "use client";
 
 import styled from "styled-components";
 import TopTabs from "./TopTabs";
 import CustomerSidePanel from "./CustomerSidePanel";
-import { fetchCustomer } from "./mocks";
+import type { Customer } from "./mocks";
 
-type Customer = ReturnType<typeof fetchCustomer>;
 type ActiveTab = React.ComponentProps<typeof TopTabs>["active"];
 
 type Props = {

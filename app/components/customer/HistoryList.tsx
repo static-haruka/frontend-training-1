@@ -1,11 +1,10 @@
 "use client";
 
 import styled from "styled-components";
-import type { Car, Transaction, TransactionKind } from "./mocks";
+import type { Transaction, TransactionKind } from "./mocks";
 
 type Props = {
   items: Transaction[];
-  cars: Car[];
 };
 
 export default function HistoryList({ items }: Props) {
@@ -47,7 +46,7 @@ export default function HistoryList({ items }: Props) {
     </Wrap>
   );
 }
-// 表示用
+
 function kindLabel(kind: TransactionKind) {
   if (kind === "purchase") return "購入履歴";
   return "査定履歴";

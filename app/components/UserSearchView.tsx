@@ -25,8 +25,6 @@ export default function UserSearchView({
   onDecide,
 }: Props) {
 
-  const showTable = true;
-
   return (
     <Page>
       <Card>
@@ -49,8 +47,7 @@ export default function UserSearchView({
           </SearchButton>
         </SearchRow>
 
-        {showTable && (
-          <>
+        <>
             <Table>
               <thead>
                 <tr>
@@ -98,8 +95,7 @@ export default function UserSearchView({
                 決定
               </DecideButton>
             </ButtonRow>
-          </>
-        )}
+        </>
       </Card>
     </Page>
   );

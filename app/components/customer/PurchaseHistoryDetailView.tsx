@@ -35,6 +35,8 @@ export default function PurchaseHistoryDetailView({
   }, [purchaseId]);
 
   if (!item) return null;
+  
+  if (!customer) return <div>顧客情報が見つかりません</div>;
 
   const comments = item.comments ?? [];
 
