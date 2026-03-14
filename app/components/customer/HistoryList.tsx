@@ -1,11 +1,10 @@
 "use client";
 
 import styled from "styled-components";
-import type { Car, Transaction, TransactionKind } from "./mocks";
+import type { Transaction, TransactionKind } from "./mocks";
 
 type Props = {
   items: Transaction[];
-  cars: Car[];
 };
 
 export default function HistoryList({ items }: Props) {

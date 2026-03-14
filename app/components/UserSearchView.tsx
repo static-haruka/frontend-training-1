@@ -24,7 +24,6 @@ export default function UserSearchView({
   onBack,
   onDecide,
 }: Props) {
-  const showTable = true;
 
   return (
     <Page>
@@ -48,46 +47,44 @@ export default function UserSearchView({
           </SearchButton>
         </SearchRow>
 
-        {showTable && (
-          <>
-            <TableScroller>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Croooober ID</th>
-                    <th>氏名</th>
-                    <th>電話番号</th>
-                    <th>住所</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.length === 0 ? (
-                    <NoResultRow>
-                      <td colSpan={4}>該当する顧客がいません</td>
-                    </NoResultRow>
-                  ) : (
-                    users.map((user) => {
-                      const isSelected = selectedId === user.crooooberId;
-                      return (
-                        <TableRow
-                          key={user.crooooberId}
-                          $selected={isSelected}
-                          onClick={() => onSelectUser(user.crooooberId)}
-                          role="button"
-                          tabIndex={0}
-                          aria-selected={isSelected}
-                        >
-                          <td>{user.crooooberId}</td>
-                          <td>{user.name}</td>
-                          <td>{user.phone}</td>
-                          <td>{user.address}</td>
-                        </TableRow>
-                      );
-                    })
-                  )}
-                </tbody>
-              </Table>
-            </TableScroller>
+        <>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Croooober ID</th>
+                  <th>氏名</th>
+                  <th>電話番号</th>
+                  <th>住所</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.length === 0 ? (
+                  <NoResultRow>
+                    <td colSpan={4}>該当する顧客がいません</td>
+                  </NoResultRow>
+                ) : (
+                  users.map((user) => {
+                    const isSelected = selectedId === user.crooooberId;
+
+                    return (
+                      <TableRow
+                        key={user.crooooberId}
+                        $selected={isSelected}
+                        onClick={() => onSelectUser(user.crooooberId)}
+                        role="button"
+                        tabIndex={0}
+                        aria-selected={isSelected}
+                      >
+                        <td>{user.crooooberId}</td>
+                        <td>{user.name}</td>
+                        <td>{user.phone}</td>
+                        <td>{user.address}</td>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </tbody>
+            </Table>
 
             <ButtonRow>
               <BackButton type="button" onClick={onBack}>
@@ -97,8 +94,7 @@ export default function UserSearchView({
                 決定
               </DecideButton>
             </ButtonRow>
-          </>
-        )}
+        </>
       </Card>
     </Page>
   );

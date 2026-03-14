@@ -2,8 +2,8 @@ import CustomerPageShell from "@/app/components/customer/CustomerPageShell";
 import ReservationView from "@/app/components/customer/ReservationView";
 import { fetchCustomer } from "@/app/components/customer/mocks";
 
-export default function ReservationPage({ params }: { params: { customerId: string } }) {
-  // 既存のモック関数から顧客データを取得
+export default async function ReservationPage(props: { params: Promise<{ customerId: string }> }) {
+  const params = await props.params;
   const customer = fetchCustomer(params.customerId);
 
   return (

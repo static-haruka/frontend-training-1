@@ -7,23 +7,20 @@ import {
   mockTransactions2,
 } from "./mocks";
 
-test("fetchCustomer: crooooberId が customer2 と一致すると mockCustomer2 を返す", () => {
-  const c = fetchCustomer(mockCustomer2.crooooberId);
-  expect(c.crooooberId).toBe(mockCustomer2.crooooberId);
+test("fetchCustomer: 正しいIDで小池さんが取得できること", () => {
+  const c = fetchCustomer(mockCustomer2.id);
+  expect(c?.id).toBe(mockCustomer2.id);
 });
 
-test("fetchCustomer: crooooberId が一致しない場合はデフォルトの mockCustomer を返す", () => {
-  const c = fetchCustomer("unknown-id");
-  expect(c).toBe(mockCustomer);
+test("fetchCustomer: 一致しない場合は throw すること", () => {
+  expect(() => fetchCustomer("unknown-id")).toThrow("Customer not found: unknown-id");
 });
 
-
-test("fetchTransactions: crooooberId が customer2 と一致すると mockTransactions2 を返す", () => {
-  const list = fetchTransactions(mockCustomer2.crooooberId);
+test("fetchTransactions: 正しいIDで取引履歴が取得できること", () => {
+  const list = fetchTransactions(mockCustomer2.id);
   expect(list).toBe(mockTransactions2);
 });
 
-test("fetchTransactions: crooooberId が一致しない場合はデフォルトの mockTransactions を返す", () => {
-  const list = fetchTransactions("unknown-id");
-  expect(list).toBe(mockTransactions);
+test("fetchTransactions: 一致しない場合は throw すること", () => {
+  expect(() => fetchTransactions("unknown-id")).toThrow("Customer not found: unknown-id");
 });

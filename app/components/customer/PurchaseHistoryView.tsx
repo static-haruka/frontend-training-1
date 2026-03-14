@@ -56,10 +56,8 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
   const customerIdFromParams = typeof raw === "string" ? raw : raw?.[0] ?? "";
   const customerId = customerIdProp ?? customerIdFromParams;
 
-  const customer = useMemo(() => {
-    const id = customerId || "12345678901234";
-    return fetchCustomer(id);
-  }, [customerId]);
+  const resolvedCustomerId = customerId || "12345678901234";
+  const customer = fetchCustomer(resolvedCustomerId);
 
   const [filters, setFilters] = useState<FilterState>({
     keyword: "",
@@ -185,7 +183,7 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
         </MemoOnly>
       </CountRow>
 
-      <PurchaseHistoryList customerId={customerId || "12345678901234"} items={paged} />
+      <PurchaseHistoryList customerId={resolvedCustomerId} items={paged} />
 
       <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </CustomerPageShell>

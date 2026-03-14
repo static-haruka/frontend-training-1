@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import HistoryList from "./HistoryList";
-import { mockCustomer } from "./mocks";
-
 const meta: Meta<typeof HistoryList> = {
   title: "Customer/HistoryList",
   component: HistoryList,
@@ -20,7 +18,6 @@ type Story = StoryObj<typeof HistoryList>;
 
 export const Default: Story = {
   args: {
-    cars: mockCustomer.cars,
     items: [
       {
         id: "t-1",
@@ -68,7 +65,6 @@ export const Default: Story = {
 
 export const Empty: Story = {
   args: {
-    cars: mockCustomer.cars,
     items: [],
   },
 };
