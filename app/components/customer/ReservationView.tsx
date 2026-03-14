@@ -118,26 +118,6 @@ export default function ReservationView({ customer }: Props) {
 
       <Section>
         <SectionTitle>UPPIT(持込取付予約)</SectionTitle>
-<<<<<<< HEAD
-        <ToggleWrapper>
-          <ToggleGroup>
-            <ToggleOption
-              $active={uppitFilter === "future"}
-              $isFirst
-              onClick={() => setUppitFilter("future")}
-            >
-              本日以降の予約のみ
-            </ToggleOption>
-            <ToggleOption
-              $active={uppitFilter === "all"}
-              onClick={() => setUppitFilter("all")}
-            >
-              過去の予約も含む
-            </ToggleOption>
-          </ToggleGroup>
-        </ToggleWrapper>
-=======
->>>>>>> main
       </Section>
     </Container>
   );
