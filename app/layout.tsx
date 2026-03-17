@@ -36,16 +36,13 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StyledComponentsRegistry>
           <App>
-            <Header>
-              <HeaderLeft>
-                <HeaderTitle>メンテナンスノート</HeaderTitle>
-              </HeaderLeft>
-              <HeaderRight>UPGARAGE練馬店</HeaderRight>
-            </Header>
-
             <Body>
               <Sidebar />
               <Main>
+                <Header>
+                  <HeaderTitle>メンテナンスノート</HeaderTitle>
+                  <HeaderRight>UPGARAGE練馬店</HeaderRight>
+                </Header>
                 <Content>{children}</Content>
               </Main>
             </Body>
@@ -66,28 +63,6 @@ const App = styled.div`
   flex-direction: column;
 `;
 
-const Header = styled.header`
-  height: 48px;
-  flex-shrink: 0;
-  background: #f7f7f7;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-`;
-
-const HeaderLeft = styled.div``;
-
-const HeaderTitle = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const HeaderRight = styled.div`
-  margin-left: auto;
-  font-size: 12px;
-`;
-
 const Body = styled.div`
   flex: 1;
   display: flex;
@@ -100,6 +75,26 @@ const Main = styled.div`
   flex-direction: column;
   min-width: 0;
   overflow-y: auto;
+`;
+
+const Header = styled.header`
+  height: 56px;
+  flex-shrink: 0;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+`;
+
+const HeaderTitle = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const HeaderRight = styled.div`
+  margin-left: auto;
+  font-size: 12px;
 `;
 
 const Content = styled.main`
