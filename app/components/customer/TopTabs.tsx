@@ -85,17 +85,12 @@ export default function TopTabs({ active }: Props) {
 
 const TabsScroller = styled.div`
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
 `;
 
 const Bar = styled.div<{ $cols: number }>`
   display: grid;
   grid-template-columns: repeat(${(p) => p.$cols}, 1fr);
   border-bottom: 1px solid #e6e6e6;
-  min-width: ${(p) => p.$cols * 80}px;
 `;
 
 const Tab = styled.button<{
@@ -142,13 +137,13 @@ const Icon = styled.span`
 `;
 
 const TabLabel = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   color: #222;
   line-height: 1.2;
   text-align: center;
   word-break: keep-all;
 
   @media (max-width: 768px) {
-    font-size: 10px;
+    font-size: 9px;
   }
 `;

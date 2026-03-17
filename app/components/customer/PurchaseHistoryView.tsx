@@ -124,8 +124,7 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
 
   return (
     <CustomerPageShell customer={customer} active="purchase">
-      <FiltersBarOuter>
-        <FiltersBar>
+      <FiltersBar>
         <SearchArea>
           <SearchInputWrap>
             <SearchIcon aria-hidden="true">
@@ -172,8 +171,7 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
             ))}
           </CarSelect>
         </RightArea>
-        </FiltersBar>
-      </FiltersBarOuter>
+      </FiltersBar>
 
       <CountRow>
         <CountText>{filtered.length}件</CountText>
@@ -196,31 +194,39 @@ export default function PurchaseHistoryView({ customerId: customerIdProp }: Prop
 
 /* styles */
 
-const FiltersBarOuter = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e6e6e6;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-`;
-
 const FiltersBar = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: max-content;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 `;
 
 const SearchArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  min-width: 0;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 240px;
+  flex: 1;
+  min-width: 0;
+
+  @media (min-width: 769px) {
+    max-width: 320px;
+  }
 `;
 
 const SearchIcon = styled.div`
@@ -276,27 +282,39 @@ const RightArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const DateGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 `;
 
 const DateInput = styled.input`
   height: 36px;
-  width: 140px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 8px;
   background: #fff;
   box-sizing: border-box;
   font-size: 13px;
+  flex: 1;
 
   &:focus {
     border-color: #2f80ed;
     outline: none;
+  }
+
+  @media (min-width: 769px) {
+    width: 140px;
+    flex: unset;
   }
 `;
 
@@ -308,7 +326,7 @@ const Wave = styled.span`
 
 const CarSelect = styled.select`
   height: 36px;
-  width: 160px;
+  width: 100%;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;

@@ -29,7 +29,7 @@ const Layout = styled.div`
   display: flex;
   min-height: 100%;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
   }
 `;
@@ -45,7 +45,7 @@ const MainInner = styled.div`
   padding: 24px 24px 16px;
   min-width: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     padding: 16px;
   }
 `;

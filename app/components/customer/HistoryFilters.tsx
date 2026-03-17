@@ -19,8 +19,7 @@ type Props = {
 
 export default function HistoryFilters({ cars, value, onChange }: Props) {
   return (
-    <WrapOuter>
-      <Wrap>
+    <Wrap>
       <SearchArea>
         <SearchInputWrap>
           <SearchIcon aria-hidden="true">
@@ -69,36 +68,42 @@ export default function HistoryFilters({ cars, value, onChange }: Props) {
           ))}
         </RegisteredCarSelect>
       </RightArea>
-      </Wrap>
-    </WrapOuter>
+    </Wrap>
   );
 }
-
-const WrapOuter = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e6e6e6;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-`;
 
 const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: max-content;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 `;
 
 const SearchArea = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 `;
 
 const SearchInputWrap = styled.div`
   position: relative;
-  width: 240px;
+  flex: 1;
+  min-width: 0;
+
+  @media (min-width: 769px) {
+    max-width: 320px;
+  }
 `;
 
 const SearchIcon = styled.div`
@@ -150,17 +155,24 @@ const RightArea = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Period = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 `;
 
 const DateInput = styled.input`
   height: 34px;
-  width: 140px;
+  width: 130px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
@@ -169,6 +181,11 @@ const DateInput = styled.input`
 
   &:not(:focus):invalid {
     color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    flex: 1;
+    width: auto;
   }
 `;
 
@@ -180,10 +197,11 @@ const Tilde = styled.span`
 
 const RegisteredCarSelect = styled.select`
   height: 34px;
-  width: 160px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
   padding: 0 10px;
   background: #fff;
+  min-width: 0;
   box-sizing: border-box;
+  width: 100%;
 `;

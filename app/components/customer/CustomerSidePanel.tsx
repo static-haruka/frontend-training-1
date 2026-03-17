@@ -62,7 +62,7 @@ const Wrap = styled.aside`
   background: #fff;
   box-sizing: border-box;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
     min-width: 0;
     border-right: none;
@@ -138,6 +138,15 @@ const Cars = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 12px;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
 `;
 
 const CarCard = styled.div`
@@ -145,6 +154,14 @@ const CarCard = styled.div`
   gap: 10px;
   align-items: center;
   min-width: 0;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 0 auto;
+    width: 100px;
+    gap: 6px;
+  }
 `;
 
 const CarThumb = styled.div`
@@ -153,12 +170,10 @@ const CarThumb = styled.div`
   min-width: 44px;
   min-height: 34px;
   flex: 0 0 44px;
-
   border: 1px solid #dcdcdc;
   border-radius: 3px;
   background: #fff;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,6 +183,13 @@ const CarThumb = styled.div`
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: 60px;
+    flex: unset;
+    min-width: unset;
   }
 `;
 
@@ -187,10 +209,13 @@ const CarModel = styled.div`
   font-size: 16px;
   font-weight: 800;
   line-height: 1.15;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
 `;
 
 const CarNote = styled.div`
@@ -206,6 +231,12 @@ const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    padding: 10px 12px 14px;
+    gap: 8px;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -218,11 +249,13 @@ const ActionButton = styled.button`
   cursor: pointer;
   width: 100%;
 
-  &:hover {
-    background: #f3f8ff;
-  }
+  &:hover { background: #f3f8ff; }
+  &:active { transform: translateY(1px); }
 
-  &:active {
-    transform: translateY(1px);
+  @media (max-width: 1024px) {
+    height: 40px;
+    font-size: 11px;
+    flex: 1;
+    padding: 0 4px;
   }
 `;
