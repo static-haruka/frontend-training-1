@@ -55,13 +55,19 @@ export default function CustomerSidePanel({ customer }: Props) {
   );
 }
 
-/* ---------- styles ---------- */
-
 const Wrap = styled.aside`
   width: 268px;
   min-width: 268px;
   border-right: 1px solid #e9e9e9;
   background: #fff;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid #e9e9e9;
+  }
 `;
 
 const CustomerBox = styled.div`
@@ -81,6 +87,7 @@ const CrooooberIdValue = styled.div`
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.02em;
+  word-break: break-word;
 `;
 
 const NameRow = styled.div`
@@ -89,6 +96,7 @@ const NameRow = styled.div`
   justify-content: center;
   gap: 6px;
   margin: 10px 0 8px;
+  flex-wrap: wrap;
 `;
 
 const Name = styled.div`
@@ -130,12 +138,30 @@ const Cars = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 12px;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
 `;
 
 const CarCard = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  min-width: 0;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 0 auto;
+    width: 100px;
+    gap: 6px;
+  }
 `;
 
 const CarThumb = styled.div`
@@ -144,12 +170,10 @@ const CarThumb = styled.div`
   min-width: 44px;
   min-height: 34px;
   flex: 0 0 44px;
-
   border: 1px solid #dcdcdc;
   border-radius: 3px;
   background: #fff;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,10 +184,18 @@ const CarThumb = styled.div`
     object-fit: cover;
     display: block;
   }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: 60px;
+    flex: unset;
+    min-width: unset;
+  }
 `;
 
 const CarText = styled.div`
   min-width: 0;
+  flex: 1;
 `;
 
 const CarMaker = styled.div`
@@ -177,10 +209,13 @@ const CarModel = styled.div`
   font-size: 16px;
   font-weight: 800;
   line-height: 1.15;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
 `;
 
 const CarNote = styled.div`
@@ -188,6 +223,7 @@ const CarNote = styled.div`
   font-size: 11px;
   color: #1b6bd1;
   font-weight: 600;
+  word-break: break-word;
 `;
 
 const Buttons = styled.div`
@@ -195,6 +231,12 @@ const Buttons = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    padding: 10px 12px 14px;
+    gap: 8px;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -205,12 +247,15 @@ const ActionButton = styled.button`
   color: #1b6bd1;
   font-weight: 800;
   cursor: pointer;
+  width: 100%;
 
-  &:hover {
-    background: #f3f8ff;
-  }
+  &:hover { background: #f3f8ff; }
+  &:active { transform: translateY(1px); }
 
-  &:active {
-    transform: translateY(1px);
+  @media (max-width: 1024px) {
+    height: 40px;
+    font-size: 11px;
+    flex: 1;
+    padding: 0 4px;
   }
 `;

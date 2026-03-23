@@ -23,9 +23,7 @@ export default function HistoryList({ items }: Props) {
               <MetaCar $isUnset={t.statusLabel === "未設定"}>
                 {t.carLabel}
               </MetaCar>
-
               <KindTag kind={t.kind}>{kindLabel(t.kind)}</KindTag>
-
             </MetaLine>
           </Meta>
 
@@ -52,8 +50,6 @@ function kindLabel(kind: TransactionKind) {
   return "査定履歴";
 }
 
-/* ---------- styles ---------- */
-
 const Wrap = styled.div`
   margin-top: 10px;
   border-top: 1px solid #e6e6e6;
@@ -66,18 +62,25 @@ const Row = styled.div`
   column-gap: 14px;
 
   min-height: 68px;
-  padding: 10px 10px;
+  padding: 10px;
 
   border-bottom: 1px solid #e6e6e6;
   background: #fff;
   cursor: pointer;
 
-  &:hover {
-    background: #fafafa;
-  }
+  &:hover { background: #fafafa; }
+  &:active { background: #f5f5f5; }
 
-  &:active {
-    background: #f5f5f5;
+  @media (max-width: 768px) {
+    grid-template-columns: 40px 1fr 24px;
+    grid-template-areas:
+      "icon meta    chevron"
+      "icon title   chevron"
+      "icon right   chevron";
+    column-gap: 10px;
+    row-gap: 4px;
+    align-items: start;
+    padding: 12px 8px;
   }
 `;
 
@@ -85,6 +88,12 @@ const LeftIconArea = styled.div`
   display: grid;
   place-items: center;
   position: relative;
+
+  @media (max-width: 768px) {
+    grid-area: icon;
+    align-self: start;
+    padding-top: 2px;
+  }
 `;
 
 const Circle = styled.div`
@@ -97,12 +106,13 @@ const Circle = styled.div`
 
 const CommentBadge = styled.div`
   position: absolute;
-  top: 10px;
-  left: 32px;
+  top: -4px;
+  left: 16px;
   width: 14px;
   height: 10px;
   border-radius: 2px;
   background: #ff9f1a;
+  box-shadow: 0 0 0 2px #fff;
 `;
 
 const Meta = styled.div`
@@ -110,6 +120,10 @@ const Meta = styled.div`
   color: #666;
   line-height: 1.35;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    grid-area: meta;
+  }
 `;
 
 const MetaDate = styled.div`
@@ -122,16 +136,20 @@ const MetaLine = styled.div`
   align-items: center;
   gap: 8px;
   min-width: 0;
+  flex-wrap: wrap;
 `;
 
 const MetaCar = styled.div<{ $isUnset: boolean }>`
   color: ${(p) => (p.$isUnset ? "#d60000" : "#666")};
-
   flex: 0 0 120px;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 768px) {
+    flex: 1 1 auto;
+  }
 `;
 
 const KindTag = styled.span<{ kind: TransactionKind }>`
@@ -139,21 +157,11 @@ const KindTag = styled.span<{ kind: TransactionKind }>`
   padding: 3px 8px;
   border-radius: 4px;
   white-space: nowrap;
-
   color: #000;
   background: #f2f2f2;
 
-  ${(p) =>
-    p.kind === "purchase" &&
-    `
-      background: #fff3c4;
-    `}
-
-  ${(p) =>
-    p.kind === "assessment" &&
-    `
-      background: #e6f5ea;
-    `}
+  ${(p) => p.kind === "purchase" && `background: #fff3c4;`}
+  ${(p) => p.kind === "assessment" && `background: #e6f5ea;`}
 `;
 
 const Title = styled.div`
@@ -161,15 +169,25 @@ const Title = styled.div`
   font-weight: 800;
   color: #111;
   min-width: 0;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 768px) {
+    grid-area: title;
+    white-space: normal;
+    word-break: break-word;
+  }
 `;
 
 const Right = styled.div`
   text-align: right;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    grid-area: right;
+    text-align: left;
+  }
 `;
 
 const Amount = styled.div`
@@ -188,14 +206,23 @@ const Shop = styled.div`
   margin-top: 2px;
   font-size: 10px;
   color: #aaa;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 768px) {
+    white-space: normal;
+    word-break: break-word;
+  }
 `;
 
 const Chevron = styled.div`
   font-size: 20px;
   color: #999;
   text-align: center;
+
+  @media (max-width: 768px) {
+    grid-area: chevron;
+    align-self: center;
+  }
 `;

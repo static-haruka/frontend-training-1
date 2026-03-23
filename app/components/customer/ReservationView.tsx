@@ -41,27 +41,27 @@ export default function ReservationView({ customer }: Props) {
   });
 
   const totalItems = filteredReservations.length;
-  const totalPages = Math.max(Math.ceil(totalItems / ITEMS_PER_PAGE), 1); 
-  
+  const totalPages = Math.max(Math.ceil(totalItems / ITEMS_PER_PAGE), 1);
+
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const currentReservations = filteredReservations.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <Container>
-      <HistoryFilters 
-        cars={customer.cars} 
-        value={filterState} 
-        onChange={setFilterState} 
+      <HistoryFilters
+        cars={customer.cars}
+        value={filterState}
+        onChange={setFilterState}
       />
 
       <ListHeader>
         <CountText>{totalItems}件</CountText>
         <MemoLabel>
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             checked={filterState.hasCommentOnly}
             onChange={(e) => setFilterState({ ...filterState, hasCommentOnly: e.target.checked })}
-          /> 
+          />
           メモ付きのみ
         </MemoLabel>
       </ListHeader>
@@ -73,8 +73,9 @@ export default function ReservationView({ customer }: Props) {
         <SectionTitle>買取予約</SectionTitle>
         <ToggleWrapper>
           <ToggleGroup>
-            <ToggleOption 
+            <ToggleOption
               $active={purchaseFilter === "future"}
+              $isFirst
               onClick={() => {
                 setPurchaseFilter("future");
                 setPage(1);
@@ -82,11 +83,11 @@ export default function ReservationView({ customer }: Props) {
             >
               本日以降の予約のみ
             </ToggleOption>
-            <ToggleOption 
+            <ToggleOption
               $active={purchaseFilter === "all"}
               onClick={() => {
                 setPurchaseFilter("all");
-                setPage(1); 
+                setPage(1);
               }}
             >
               過去の予約も含む
@@ -97,10 +98,10 @@ export default function ReservationView({ customer }: Props) {
         <ReservationList>
           {currentReservations.length > 0 ? (
             currentReservations.map((res) => (
-              <ReservationItem 
-                key={res.id} 
-                reservation={res} 
-                isPast={isPastDate(res.datetime)} 
+              <ReservationItem
+                key={res.id}
+                reservation={res}
+                isPast={isPastDate(res.datetime)}
               />
             ))
           ) : (
@@ -128,12 +129,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
 `;
 
 const ListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 `;
 
 const CountText = styled.span`
@@ -159,10 +162,12 @@ const NoteText = styled.p`
   font-size: 14px;
   color: #666;
   margin: 0;
+  line-height: 1.6;
 `;
 
 const Section = styled.div`
   margin-top: 16px;
+  min-width: 0;
 `;
 
 const SectionTitle = styled.h3`
@@ -171,9 +176,11 @@ const SectionTitle = styled.h3`
 `;
 
 const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
   margin-bottom: 16px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 const ToggleGroup = styled.div`
@@ -181,22 +188,37 @@ const ToggleGroup = styled.div`
   border: 1px solid #ccc;
   border-radius: 4px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    display: flex;
+    width: 100%;
+  }
 `;
 
-const ToggleOption = styled.button<{ $active: boolean }>`
-  padding: 8px 16px;
+const ToggleOption = styled.button<{ $active: boolean; $isFirst?: boolean }>`
+  padding: 8px 20px;
   border: none;
+  border-top: ${(props) => (props.$isFirst ? "none" : "1px solid #ccc")};
   background-color: ${(props) => (props.$active ? "#000" : "#fff")};
   color: ${(props) => (props.$active ? "#fff" : "#666")};
   font-size: 12px;
   cursor: pointer;
   outline: none;
+  flex: 1;
+  white-space: nowrap;
+
+  @media (min-width: 769px) {
+    border-top: none;
+    border-left: ${(props) => (props.$isFirst ? "none" : "1px solid #ccc")};
+    flex: unset;
+  }
 `;
 
 const ReservationList = styled.div`
   display: flex;
   flex-direction: column;
   border-top: 1px solid #eee;
+  min-width: 0;
 `;
 
 const EmptyMessage = styled.div`

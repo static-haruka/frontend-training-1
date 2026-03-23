@@ -73,25 +73,28 @@ describe("PurchaseHistoryList", () => {
       />
     );
 
+
     const row1 = screen.getByLabelText("購入履歴の詳細: タイヤ交換");
     expect(row1).toHaveAttribute("href", "/customer/CUST-1/purchase/p-001");
-    expect(screen.getByText("2022/11/01 /")).toBeInTheDocument();
-    expect(screen.getByText("WRX STI")).toBeInTheDocument();
-    expect(screen.getByText("未対応")).toBeInTheDocument();
-    expect(screen.getByText("¥ 12,000")).toBeInTheDocument();
-    expect(screen.getByText("Upgarage 新宿店")).toBeInTheDocument();
+
+    expect(screen.getAllByText("2022/11/01")).toHaveLength(2);
+    expect(screen.getAllByText("WRX STI")).toHaveLength(2);
+    expect(screen.getAllByText("未対応")).toHaveLength(2);
+
+    expect(screen.getAllByText("¥ 12,000")).toHaveLength(2);
+    expect(screen.getAllByText("Upgarage 新宿店")).toHaveLength(2);
 
     const row2 = screen.getByLabelText("購入履歴の詳細: 詳細");
     expect(row2).toHaveAttribute("href", "/customer/CUST-1/purchase/p-002");
-    expect(screen.getByText("¥ 5,000")).toBeInTheDocument();
+    expect(screen.getAllByText("¥ 5,000")).toHaveLength(2);
 
-    expect(screen.getByText("🚗")).toBeInTheDocument(); // car
-    expect(screen.getByText("⚙️")).toBeInTheDocument(); // gear
-    expect(screen.getByText("🖼️")).toBeInTheDocument(); // photo
-    expect(screen.getByText("⭕")).toBeInTheDocument(); // ring
-    expect(screen.getByText("🖥️")).toBeInTheDocument(); // monitor
-    expect(screen.getByText("🔗")).toBeInTheDocument(); // default
+    expect(screen.getAllByText("🚗")).toHaveLength(2); // car
+    expect(screen.getAllByText("⚙️")).toHaveLength(2); // gear
+    expect(screen.getAllByText("🖼️")).toHaveLength(2); // photo
+    expect(screen.getAllByText("⭕")).toHaveLength(2); // ring
+    expect(screen.getAllByText("🖥️")).toHaveLength(2); // monitor
+    expect(screen.getAllByText("🔗")).toHaveLength(2); // default
 
-    expect(screen.getAllByLabelText("コメントあり")).toHaveLength(2);
+    expect(screen.getAllByLabelText("コメントあり")).toHaveLength(4);
   });
 });
